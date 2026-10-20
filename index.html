@@ -1,0 +1,1678 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head>
+<script id="help-doc-export-data">window.__HELP_DOC_EXPORT__={"mobile_stall_pick_help_v1":"1. 消费应用新增一个档口显示屏，点击进入档口选择页\n2. 选择页为食堂、档口两级：左侧选择食堂，右侧展示该食堂下的档口。（根据当前登录用户商户数据权过滤，无商户数据权的显示暂无档口数据）\n3. 点击档口进入「展示屏设置」。\n4. 已保存展示屏配置的档口显示「已配置」。","mobile_screen_setting_help_v2":"1. 页面标题为「展示屏设置」，所选档口名称和所属食堂展示在页面内。\n2.与后台展示屏设置的数据互通，保留两端最新一次设置的数据。\n3. 关联展示屏选填，不选也可以保存。\n4. 档口LOGO、档口宣传图、档口宣传视频的上传入口统一为标题右侧虚线加号。\n5. 档口LOGO仅 1 张，支持 PNG/JPG，建议尺寸 200*90px，大小不超过 10MB。点击图片可放大查看，右上角删除；更换需删除后重新上传。\n6. 档口宣传图最多 4 张，支持 PNG/JPG，建议尺寸 603*378px，大小不超过 10MB，支持拖拽调序。点击图片可放大查看，右上角删除。满 4 张后隐藏上传入口。\n7. 档口宣传视频仅可上传 1 个，建议 MP4，分辨率不超过 1080P，大小不超过 100MB。上传后隐藏上传按钮，点击文件名可播放，删除后可重新上传。\n8. 保存后写入当前档口，返回选择页时该档口标记为已配置。\n"};</script>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>达实智能</title>
+  <style>
+    :root {
+      --blue: #2f86ff;
+      --blue-deep: #1f6fe8;
+      --text: #222;
+      --sub: #8b8f97;
+      --label: #5c6370;
+      --bg: #f5f7fb;
+      --card: #fff;
+      --line: #eef1f5;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; }
+    body {
+      font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+      color: var(--text);
+      background: #d5dbe3;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    button, input { font-family: inherit; }
+    button { border: 0; background: none; cursor: pointer; color: inherit; }
+    .device {
+      width: 390px;
+      height: 844px;
+      max-height: 100%;
+      min-width: 0;
+      background: var(--bg);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 18px 50px rgba(20, 35, 60, 0.22);
+    }
+    @media (max-width: 480px) {
+      body { background: var(--bg); }
+      .device { width: 100%; height: 100%; box-shadow: none; }
+      .help-export-btn { top: auto; bottom: 78px; left: 12px; }
+    }
+    .help-export-btn {
+      position: fixed;
+      z-index: 30;
+      top: 18px;
+      left: 18px;
+      height: 32px;
+      padding: 0 12px;
+      border: 1px solid rgba(47, 134, 255, 0.4);
+      border-radius: 4px;
+      background: #fff;
+      color: var(--blue);
+      font-size: 13px;
+      box-shadow: 0 6px 18px rgba(20, 35, 60, 0.12);
+    }
+
+    .status {
+      height: 28px;
+      padding: 6px 14px 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 12px;
+      font-weight: 600;
+      background: #fff;
+      flex-shrink: 0;
+    }
+    .status-right { display: flex; align-items: center; gap: 5px; color: #111; }
+    .status svg { display: block; }
+
+    .nav {
+      height: 44px;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      padding: 0 12px 0 14px;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+    .nav-title {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 16px;
+      font-weight: 650;
+      letter-spacing: 0.2px;
+    }
+    .nav-title span {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .nav-back {
+      width: 28px;
+      height: 28px;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      margin-left: -6px;
+    }
+    .nav.sub .nav-back { display: flex; }
+    .swap-ico { width: 16px; height: 16px; flex-shrink: 0; color: #333; }
+    .nav-help {
+      flex-shrink: 0;
+      color: var(--blue);
+      font-size: 13px;
+      padding: 0 4px;
+      white-space: nowrap;
+    }
+    .nav-help[hidden] { display: none; }
+    .capsule {
+      height: 30px;
+      border: 1px solid rgba(0, 0, 0, 0.12);
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      padding: 0 10px;
+      gap: 8px;
+      background: rgba(255, 255, 255, 0.72);
+      flex-shrink: 0;
+    }
+    .capsule .dots { font-size: 16px; letter-spacing: 1px; line-height: 1; margin-top: -4px; }
+    .capsule .split { width: 1px; height: 14px; background: rgba(0, 0, 0, 0.12); }
+    .capsule .ring {
+      width: 16px; height: 16px; border-radius: 50%;
+      border: 2px solid #111; position: relative;
+    }
+    .capsule .ring::after {
+      content: "";
+      position: absolute;
+      left: 3px; top: 3px;
+      width: 6px; height: 6px; border-radius: 50%;
+      background: #111;
+    }
+
+    .stage { flex: 1; min-height: 0; position: relative; }
+    .page {
+      position: absolute;
+      inset: 0;
+      overflow-y: auto;
+      overflow-x: hidden;
+      display: none;
+      -webkit-overflow-scrolling: touch;
+    }
+    .page.active { display: block; }
+    #page-stall-config.active { display: flex; flex-direction: column; background: #f5f6f8; }
+    .page::-webkit-scrollbar { width: 0; }
+
+    .user-row {
+      background: #fff;
+      display: flex;
+      align-items: center;
+      padding: 0 16px 6px;
+      gap: 8px;
+    }
+    .avatar {
+      width: 32px; height: 32px; border-radius: 50%;
+      background: linear-gradient(180deg, #f7c6d4, #f3a8bc);
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+    .avatar svg { width: 32px; height: 32px; display: block; }
+    .user-name { font-size: 15px; font-weight: 600; }
+    .user-grid {
+      margin-left: auto;
+      width: 22px; height: 22px;
+      color: #8e939c;
+    }
+
+    .home-body { padding: 8px 12px 4px; }
+    .work-body, .plain { padding: 8px 12px 12px; }
+
+    .banner {
+      height: 104px;
+      border-radius: 10px;
+      overflow: hidden;
+      position: relative;
+      background: linear-gradient(100deg, #3f93f8 0%, #4aa2ff 38%, #5aa7f5 100%);
+      color: #fff;
+    }
+    .banner-copy {
+      position: absolute;
+      left: 16px; top: 18px;
+      z-index: 2;
+      text-shadow: 0 2px 8px rgba(20, 70, 150, 0.25);
+    }
+    .banner-copy b { display: block; font-size: 20px; line-height: 1.35; font-weight: 750; letter-spacing: 1px; }
+    .banner-loc {
+      position: absolute;
+      right: 12px; bottom: 8px;
+      z-index: 2;
+      font-size: 11px;
+      display: flex;
+      align-items: center;
+      gap: 3px;
+      opacity: 0.95;
+    }
+    .banner-art { position: absolute; right: 0; top: 0; width: 210px; height: 104px; }
+
+    .card {
+      background: var(--card);
+      border-radius: 12px;
+      margin-top: 8px;
+    }
+    .block-hd {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 12px 0;
+      font-size: 15px;
+      font-weight: 700;
+    }
+    .block-hd i {
+      width: 3px; height: 14px; border-radius: 2px;
+      background: var(--blue); display: block;
+    }
+    .block-hd .more {
+      margin-left: auto;
+      color: #b0b4bc;
+      letter-spacing: 1px;
+      font-weight: 700;
+      padding: 0 2px;
+      line-height: 1;
+    }
+    .section-hd { padding-left: 2px; padding-right: 2px; }
+
+    .app-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      padding: 4px 2px 6px;
+    }
+    .app-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      padding: 6px 2px 6px;
+      border-radius: 8px;
+    }
+    .app-item:active { background: #f3f6fb; }
+    .app-item .ico { width: 28px; height: 28px; }
+    .app-item .ico svg { width: 28px; height: 28px; display: block; }
+    .app-item em {
+      font-style: normal;
+      font-size: 12px;
+      color: var(--label);
+      line-height: 1.2;
+      text-align: center;
+    }
+
+    .door-card {
+      margin-top: 6px;
+      background: linear-gradient(180deg, #e7f3ff 0%, #f3f9ff 100%);
+      border-radius: 12px;
+      min-height: 68px;
+      padding: 10px 10px 10px 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .door-card:active { filter: brightness(0.98); }
+    .door-copy { flex: 1; min-width: 0; }
+    .door-copy strong {
+      display: block;
+      color: var(--blue);
+      font-size: 16px;
+      font-weight: 750;
+    }
+    .door-copy p { margin-top: 6px; color: #9aa3af; font-size: 12px; }
+    .door-art { width: 92px; height: 64px; flex-shrink: 0; }
+    .open-btn {
+      margin-top: 8px;
+      height: 30px;
+      padding: 0 16px;
+      border-radius: 6px;
+      background: var(--blue);
+      color: #fff;
+      font-size: 13px;
+    }
+
+    .lift-card { margin-top: 6px; padding: 12px 14px 12px; }
+    .lift-row { display: flex; align-items: center; gap: 10px; }
+    .floor {
+      font-size: 28px;
+      font-weight: 750;
+      letter-spacing: 0.5px;
+      min-width: 42px;
+    }
+    .floor:active { color: var(--blue); }
+    .swap {
+      width: 22px; height: 22px; color: #9aa0a8;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .call-btn {
+      margin-left: auto;
+      height: 36px;
+      min-width: 76px;
+      padding: 0 18px;
+      border-radius: 6px;
+      background: var(--blue);
+      color: #fff;
+      font-size: 16px;
+      font-weight: 650;
+    }
+    .call-btn:active { background: var(--blue-deep); }
+    .lift-hist { display: flex; gap: 12px; margin-top: 10px; }
+    .chip {
+      flex: 1;
+      height: 36px;
+      border-radius: 8px;
+      background: #e7f2ff;
+      color: #3d7fe8;
+      font-size: 14px;
+      font-weight: 600;
+    }
+    .chip:active { background: #d7e8ff; }
+
+    .work-body { padding-top: 8px; }
+    .work-card { padding-bottom: 6px; }
+    .work-card .block-hd { padding-top: 14px; }
+
+    .msg-list { padding: 10px 12px; display: flex; flex-direction: column; gap: 10px; }
+    .msg-item {
+      background: #fff;
+      border-radius: 12px;
+      padding: 14px;
+      display: flex;
+      gap: 10px;
+    }
+    .msg-dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: #ff4d4f; margin-top: 6px; flex-shrink: 0;
+    }
+    .msg-item.read .msg-dot { background: #d9d9d9; }
+    .msg-item b { font-size: 14px; display: block; }
+    .msg-item p { margin-top: 4px; color: var(--sub); font-size: 12px; line-height: 1.45; }
+    .msg-item time { display: block; margin-top: 6px; color: #b0b4bc; font-size: 11px; }
+
+    .mine-head {
+      background: linear-gradient(180deg, #2f86ff 0%, #5aa4ff 70%, #f5f7fb 100%);
+      padding: 18px 18px 28px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: #fff;
+    }
+    .mine-head .avatar { width: 52px; height: 52px; border: 2px solid rgba(255,255,255,.8); }
+    .mine-head .avatar svg { width: 52px; height: 52px; }
+    .mine-head b { font-size: 18px; display: block; }
+    .mine-head p { margin-top: 4px; font-size: 12px; opacity: 0.92; }
+    .mine-card { margin: -12px 12px 0; background: #fff; border-radius: 12px; overflow: hidden; }
+    .mine-row {
+      width: 100%;
+      height: 50px;
+      padding: 0 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 14px;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+    }
+    .mine-row:last-child { border-bottom: 0; }
+    .mine-row svg { width: 18px; height: 18px; }
+    .mine-row .arrow { margin-left: auto; color: #c5c8ce; }
+
+    .tabbar {
+      height: 54px;
+      background: #fff;
+      border-top: 1px solid #eee;
+      display: flex;
+      flex-shrink: 0;
+    }
+    .tabbar.hide { display: none; }
+    .tab {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2px;
+      color: #8d9199;
+      font-size: 11px;
+    }
+    .tab svg { width: 22px; height: 22px; }
+    .tab.active { color: var(--blue); }
+    .home-ind-wrap { height: 16px; background: #fff; flex-shrink: 0; }
+    .home-ind {
+      width: 128px; height: 4px; border-radius: 4px;
+      background: #111; margin: 6px auto 0;
+    }
+
+    .toast {
+      position: absolute;
+      left: 50%;
+      bottom: 96px;
+      transform: translateX(-50%) translateY(8px);
+      background: rgba(30, 33, 40, 0.88);
+      color: #fff;
+      font-size: 13px;
+      padding: 10px 14px;
+      border-radius: 8px;
+      opacity: 0;
+      pointer-events: none;
+      transition: 0.2s ease;
+      max-width: 80%;
+      text-align: center;
+      z-index: 30;
+    }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+    .mask {
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.45);
+      z-index: 40;
+      display: none;
+      align-items: flex-end;
+    }
+    .mask.show { display: flex; }
+    .sheet {
+      width: 100%;
+      background: #fff;
+      border-radius: 14px 14px 0 0;
+      padding-bottom: 18px;
+      max-height: 70%;
+      display: flex;
+      flex-direction: column;
+    }
+    .sheet-hd {
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 16px;
+      font-weight: 700;
+      border-bottom: 1px solid var(--line);
+    }
+    .sheet-hd button { color: #999; font-size: 22px; line-height: 1; }
+    .sheet-bd { overflow: auto; padding: 8px 0; }
+    .opt {
+      width: 100%;
+      text-align: left;
+      padding: 13px 18px;
+      font-size: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .opt:active, .opt.on { background: #f4f8ff; color: var(--blue); }
+    .floor-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      padding: 12px 16px 4px;
+    }
+    .floor-grid button {
+      height: 40px;
+      border-radius: 8px;
+      background: #f4f6f8;
+      font-size: 14px;
+      font-weight: 600;
+    }
+    .floor-grid button.on { background: #e7f1ff; color: var(--blue); }
+
+    /* 档口选择 / 展示配置 */
+    .pick {
+      height: 100%;
+      display: flex;
+      background: #fff;
+    }
+    .pick-side, .pick-main { min-height: 0; display: flex; flex-direction: column; }
+    .pick-side { width: 112px; flex-shrink: 0; background: #f5f6f8; }
+    .pick-main { flex: 1; min-width: 0; background: #fff; }
+    .pick-cap {
+      height: 36px;
+      padding: 0 12px;
+      display: flex;
+      align-items: center;
+      font-size: 12px;
+      color: #909399;
+      flex-shrink: 0;
+    }
+    .canteen-col {
+      flex: 1;
+      overflow: auto;
+    }
+    .canteen-col::-webkit-scrollbar, .stall-col::-webkit-scrollbar, .cfg::-webkit-scrollbar { width: 0; }
+    .canteen-item {
+      width: 100%;
+      min-height: 52px;
+      padding: 14px 8px;
+      font-size: 14px;
+      color: #333;
+      text-align: center;
+      line-height: 1.3;
+    }
+    .canteen-item.on {
+      background: #fff;
+      color: var(--blue);
+      font-weight: 700;
+      box-shadow: inset 3px 0 0 var(--blue);
+    }
+    .stall-col { flex: 1; min-width: 0; overflow: auto; background: #fff; }
+    .stall-item {
+      width: 100%;
+      min-height: 52px;
+      padding: 0 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border-bottom: 1px solid #f2f3f5;
+      font-size: 15px;
+      text-align: left;
+    }
+    .stall-item:active { background: #f7f9fc; }
+    .stall-item .done {
+      font-size: 11px;
+      color: var(--blue);
+      background: #e8f3ff;
+      border-radius: 4px;
+      padding: 1px 6px;
+      flex-shrink: 0;
+    }
+    .stall-item .arrow { margin-left: auto; color: #c5c8ce; font-size: 18px; }
+    .cfg { flex: 1; min-height: 0; overflow: auto; }
+    .cfg-place { padding: 14px 16px 12px; }
+    .cfg-stall {
+      display: block;
+      color: #222;
+      font-size: 16px;
+      font-weight: 650;
+      line-height: 1.4;
+    }
+    .cfg-canteen {
+      display: block;
+      margin-top: 2px;
+      color: #909399;
+      font-size: 12px;
+    }
+    .cfg-card { background: #fff; }
+    .field {
+      padding: 14px 16px;
+      border-bottom: 1px solid #f0f0f0;
+    }
+    .field:last-child { border-bottom: 0; }
+    .field-line {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      min-height: 28px;
+    }
+    .field-label { color: #333; font-size: 15px; flex-shrink: 0; }
+    .field-value {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 2px;
+      color: #c0c4cc;
+      font-size: 14px;
+    }
+    .field-value.on { color: #333; }
+    .field-value span {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .field-value .chev { color: #c8c8c8; font-size: 18px; line-height: 1; flex-shrink: 0; }
+    .cfg-tip {
+      margin-top: 8px;
+      color: #b0b4bc;
+      font-size: 12px;
+      line-height: 1.5;
+    }
+    .upload-tile {
+      width: 72px;
+      height: 72px;
+      border: 1px dashed #d9d9d9;
+      border-radius: 2px;
+      background: #fafafa;
+      color: #c0c4cc;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .upload-tile .plus { font-size: 28px; line-height: 1; font-weight: 300; }
+    .upload-tile:active { border-color: var(--blue); color: var(--blue); }
+    .upload-tile[hidden] { display: none; }
+    .logo-set {
+      position: relative;
+      width: 72px;
+      height: 72px;
+      border: 1px solid #eee;
+      border-radius: 2px;
+      overflow: hidden;
+      background: #fafafa;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    .logo-set img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+    }
+    .linkish { color: var(--blue); font-size: 13px; text-align: left; line-height: 1.6; }
+    .poster-list { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+    .poster-list:empty { display: none; }
+    .poster-item {
+      width: 72px;
+      height: 72px;
+      border-radius: 4px;
+      position: relative;
+      overflow: hidden;
+      border: 1px solid #e4e7ed;
+      background: #f5f7fa;
+      touch-action: none;
+      cursor: pointer;
+    }
+    .poster-item img { width: 100%; height: 100%; object-fit: cover; display: block; pointer-events: none; }
+    .poster-item.dragging { opacity: 0.45; }
+    .poster-del {
+      position: absolute;
+      top: 2px;
+      right: 2px;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: rgba(0,0,0,.5);
+      color: #fff;
+      font-size: 12px;
+      line-height: 16px;
+    }
+    .video-name {
+      margin-top: 8px;
+      font-size: 13px;
+      color: #606266;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      word-break: break-all;
+    }
+    .video-name:empty { display: none; }
+    .video-play {
+      color: var(--blue);
+      font-size: 13px;
+      text-align: left;
+      line-height: 1.5;
+    }
+    .viewer {
+      position: absolute;
+      inset: 0;
+      z-index: 60;
+      background: rgba(0, 0, 0, 0.9);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 52px 16px 28px;
+    }
+    .viewer.show { display: flex; }
+    .viewer img, .viewer video {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      background: #111;
+    }
+    .viewer-close {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.16);
+      color: #fff;
+      font-size: 22px;
+      line-height: 1;
+    }
+    .cfg-foot {
+      padding: 10px 16px 16px;
+      background: #fff;
+    }
+    .cfg-save {
+      display: block;
+      width: 100%;
+      height: 44px;
+      border-radius: 6px;
+      background: var(--blue);
+      color: #fff;
+      font-size: 16px;
+    }
+    .cfg-save:active { background: var(--blue-deep); }
+    .help-mask {
+      position: absolute;
+      inset: 0;
+      z-index: 45;
+      background: rgba(0, 0, 0, 0.45);
+      display: none;
+      align-items: flex-end;
+    }
+    .help-mask.show { display: flex; }
+    .help-panel {
+      width: 100%;
+      height: 78%;
+      background: #fff;
+      border-radius: 14px 14px 0 0;
+      display: flex;
+      flex-direction: column;
+    }
+    .help-hd {
+      height: 48px;
+      padding: 0 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid #f0f0f0;
+      font-size: 16px;
+      font-weight: 700;
+    }
+    .help-hd button { color: #999; font-size: 22px; line-height: 1; }
+    .help-editor {
+      flex: 1;
+      min-height: 0;
+      margin: 12px 16px 0;
+      border: 1px solid #dcdfe6;
+      border-radius: 4px;
+      padding: 10px 12px;
+      font-size: 14px;
+      line-height: 1.7;
+      color: #333;
+      resize: none;
+      outline: none;
+      font-family: inherit;
+    }
+    .help-editor:focus { border-color: var(--blue); }
+    .help-note {
+      margin: 8px 16px;
+      color: #909399;
+      font-size: 12px;
+      line-height: 1.5;
+    }
+    .help-ft { display: flex; gap: 10px; padding: 0 16px 16px; }
+    .help-ft button { flex: 1; height: 40px; border-radius: 6px; font-size: 15px; }
+    .help-cancel { border: 1px solid #dcdfe6; background: #fff; color: #606266; }
+    .help-ok { background: var(--blue); color: #fff; }
+  </style>
+</head>
+<body>
+  <button class="help-export-btn" id="btnExportHelpDocs" type="button" title="把本地已保存的需求说明写入 HTML，便于发布">导出需求说明</button>
+  <div class="device" id="device">
+    <div class="status">
+      <span id="clock">下午2:06</span>
+      <div class="status-right">
+        <svg width="15" height="12" viewBox="0 0 15 12" fill="#111" aria-hidden="true">
+          <rect x="0" y="7" width="2.2" height="5" rx="0.4"></rect>
+          <rect x="3.2" y="5" width="2.2" height="7" rx="0.4"></rect>
+          <rect x="6.4" y="3" width="2.2" height="9" rx="0.4"></rect>
+          <rect x="9.6" y="0.5" width="2.2" height="11.5" rx="0.4"></rect>
+        </svg>
+        <span style="font-size:11px;font-weight:700">4G</span>
+        <svg width="24" height="12" viewBox="0 0 24 12" aria-hidden="true">
+          <rect x="0.6" y="0.6" width="19" height="10.8" rx="2" fill="none" stroke="#111" stroke-width="1.2"></rect>
+          <rect x="2" y="2" width="11.2" height="8" rx="1" fill="#111"></rect>
+          <path d="M21 4.2v3.6c.8-.3 1.4-1 1.4-1.8S21.8 4.5 21 4.2z" fill="#111"></path>
+        </svg>
+        <span style="font-size:11px">68</span>
+      </div>
+    </div>
+
+    <div class="nav" id="nav">
+      <button class="nav-back" id="navBack" type="button" aria-label="返回">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#222" stroke-width="2.2"><path d="M15 5L8 12l7 7"></path></svg>
+      </button>
+      <div class="nav-title" id="navTitle">
+        <span id="navText">深圳达实智能股份有限公司</span>
+        <svg class="swap-ico" id="navExtra" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M7 7h11l-3-3M17 17H6l3 3"></path>
+        </svg>
+      </div>
+      <button class="nav-help" id="navHelp" type="button" hidden="">需求说明</button>
+      <div class="capsule" aria-hidden="true">
+        <span class="dots">···</span>
+        <i class="split"></i>
+        <span class="ring"></span>
+      </div>
+    </div>
+
+    <div class="stage">
+      <section class="page active" id="page-home" data-page="home">
+        <div class="user-row">
+          <div class="avatar" aria-hidden="true">
+            <svg viewBox="0 0 64 64">
+              <circle cx="32" cy="32" r="32" fill="#f6c3d2"></circle>
+              <path d="M14 58c2-12 10-18 18-18s16 6 18 18" fill="#3d312f"></path>
+              <path d="M16 30c1-14 8-22 16-22 9 0 16 8 16 20 0 2-6 4-10 3-2 6-6 8-6 8s-5-2-7-8c-4 1-9-1-9-1z" fill="#2c2422"></path>
+              <circle cx="32" cy="30" r="10" fill="#f3c3ae"></circle>
+              <circle cx="28" cy="29" r="1" fill="#333"></circle>
+              <circle cx="36" cy="29" r="1" fill="#333"></circle>
+              <path d="M29 34c1.2 1.2 4.6 1.2 6 0" stroke="#e0897a" stroke-width="1" fill="none"></path>
+            </svg>
+          </div>
+          <div class="user-name">程影</div>
+          <button class="user-grid" id="toWork" type="button" aria-label="进入工作台">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <rect x="3" y="3" width="7.5" height="7.5" rx="1.6"></rect>
+              <rect x="13.5" y="3" width="7.5" height="7.5" rx="1.6"></rect>
+              <rect x="3" y="13.5" width="7.5" height="7.5" rx="1.6"></rect>
+              <rect x="13.5" y="13.5" width="7.5" height="7.5" rx="1.6"></rect>
+            </svg>
+          </button>
+        </div>
+        <div class="home-body">
+          <div class="banner">
+            <div class="banner-copy">
+              <b>多端互通</b>
+              <b>智慧联动</b>
+            </div>
+            <svg class="banner-art" viewBox="0 0 360 180" aria-hidden="true">
+              <ellipse cx="210" cy="168" rx="120" ry="16" fill="rgba(255,255,255,.18)"></ellipse>
+              <g transform="translate(168,28)">
+                <rect x="0" y="8" width="62" height="112" rx="8" fill="#f4f8ff"></rect>
+                <rect x="6" y="16" width="50" height="14" rx="2" fill="#2f86ff"></rect>
+                <rect x="6" y="36" width="22" height="16" rx="2" fill="#d7e8ff"></rect>
+                <rect x="32" y="36" width="24" height="16" rx="2" fill="#d7e8ff"></rect>
+                <rect x="6" y="58" width="50" height="8" rx="2" fill="#e6eef8"></rect>
+                <rect x="6" y="70" width="36" height="8" rx="2" fill="#e6eef8"></rect>
+                <rect x="6" y="86" width="50" height="22" rx="3" fill="#2f86ff" opacity=".85"></rect>
+              </g>
+              <g transform="translate(248,18)">
+                <rect x="0" y="0" width="70" height="124" rx="8" fill="#fff"></rect>
+                <rect x="6" y="10" width="58" height="16" rx="2" fill="#2f86ff"></rect>
+                <rect x="6" y="32" width="26" height="18" rx="2" fill="#e7f1ff"></rect>
+                <rect x="36" y="32" width="28" height="18" rx="2" fill="#e7f1ff"></rect>
+                <rect x="6" y="56" width="58" height="8" rx="2" fill="#e8eef6"></rect>
+                <rect x="6" y="68" width="40" height="8" rx="2" fill="#e8eef6"></rect>
+                <rect x="6" y="84" width="58" height="26" rx="3" fill="#49a0ff"></rect>
+              </g>
+              <g transform="translate(118,36)">
+                <circle cx="28" cy="18" r="14" fill="#f3c3ae"></circle>
+                <path d="M10 16c2-16 10-22 18-20 8 1 16 10 16 22-6 1-8 6-8 6H18s-3-6-8-8z" fill="#2c2422"></path>
+                <path d="M8 78c2-22 10-32 22-32s18 10 20 32l8 28H2l6-28z" fill="#f7f7f7"></path>
+                <path d="M18 50h16l6 18H14z" fill="#fff"></path>
+                <path d="M30 48c16 2 28 8 34 4" stroke="#f7f7f7" stroke-width="7" fill="none" stroke-linecap="round"></path>
+                <circle cx="64" cy="50" r="5" fill="#f3c3ae"></circle>
+              </g>
+            </svg>
+            <div class="banner-loc">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="#fff"><path d="M12 2a7 7 0 0 0-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6a2.5 2.5 0 0 1 0 5.5z"></path></svg>
+              深圳·达实智能大厦
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="block-hd"><i></i>常用应用<button class="more" type="button" data-go="work">···</button></div>
+            <div class="app-grid" id="homeApps"></div>
+          </div>
+
+          <div class="block-hd section-hd"><i></i>一键开门<button class="more" type="button" id="doorMore">···</button></div>
+          <button class="door-card" id="doorCard" type="button">
+            <div class="door-copy" id="doorCopy">
+              <strong>点击设置常用门禁</strong>
+              <p>设置完成后，一键可快速开门</p>
+            </div>
+            <svg class="door-art" viewBox="0 0 120 84" aria-hidden="true">
+              <path d="M18 70h78" stroke="#9ec4f5" stroke-width="3" fill="none"></path>
+              <path d="M28 68V22h40v46" fill="#f7fbff" stroke="#7eb6f8" stroke-width="2"></path>
+              <path d="M68 24l22 8v40l-22-6V24z" fill="#d7ebff" stroke="#7eb6f8" stroke-width="2"></path>
+              <path d="M46 40h4" stroke="#2f86ff" stroke-width="2"></path>
+              <path d="M86 18c8 6 12 16 10 28" stroke="#9ec9f8" stroke-width="2" fill="none"></path>
+            </svg>
+          </button>
+
+          <div class="block-hd section-hd"><i></i>一键呼梯<button class="more" type="button" id="liftMore">···</button></div>
+          <div class="card lift-card">
+            <div class="lift-row">
+              <button class="floor" id="fromFloor" type="button">1F</button>
+              <button class="swap" id="swapFloor" type="button" aria-label="交换楼层">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 7h11l-3-3M17 17H6l3 3"></path></svg>
+              </button>
+              <button class="floor" id="toFloor" type="button">6F</button>
+              <button class="call-btn" id="callLift" type="button">呼梯</button>
+            </div>
+            <div class="lift-hist">
+              <button class="chip" type="button" data-from="14F" data-to="9F">14F - 9F</button>
+              <button class="chip" type="button" data-from="9F" data-to="14F">9F - 14F</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="page" id="page-message" data-page="message">
+        <div class="msg-list">
+          <div class="msg-item">
+            <i class="msg-dot"></i>
+            <div>
+              <b>考勤打卡成功</b>
+              <p>您已完成今日上班打卡，打卡地点：达实智能大厦。</p>
+              <time>今天 08:57</time>
+            </div>
+          </div>
+          <div class="msg-item">
+            <i class="msg-dot"></i>
+            <div>
+              <b>访客待审批</b>
+              <p>程影，您有 1 条访客邀约待审批，请尽快处理。</p>
+              <time>今天 11:20</time>
+            </div>
+          </div>
+          <div class="msg-item read">
+            <i class="msg-dot"></i>
+            <div>
+              <b>午餐订餐成功</b>
+              <p>7F 蒸蒸日上 · 番茄炒蛋套餐，取餐号 A2388。</p>
+              <time>昨天 17:40</time>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="page" id="page-work" data-page="work">
+        <div class="work-body" id="workBody"></div>
+      </section>
+
+      <section class="page" id="page-mine" data-page="mine">
+        <div class="mine-head">
+          <div class="avatar">
+            <svg viewBox="0 0 64 64">
+              <circle cx="32" cy="32" r="32" fill="#f6c3d2"></circle>
+              <path d="M14 58c2-12 10-18 18-18s16 6 18 18" fill="#3d312f"></path>
+              <path d="M16 30c1-14 8-22 16-22 9 0 16 8 16 20 0 2-6 4-10 3-2 6-6 8-6 8s-5-2-7-8c-4 1-9-1-9-1z" fill="#2c2422"></path>
+              <circle cx="32" cy="30" r="10" fill="#f3c3ae"></circle>
+              <circle cx="28" cy="29" r="1" fill="#333"></circle>
+              <circle cx="36" cy="29" r="1" fill="#333"></circle>
+            </svg>
+          </div>
+          <div>
+            <b>程影</b>
+            <p>深圳达实智能股份有限公司</p>
+          </div>
+        </div>
+        <div class="mine-card" id="mineList"></div>
+      </section>
+
+      <section class="page" id="page-stall" data-page="stall">
+        <div class="pick">
+          <div class="pick-side">
+            <div class="pick-cap">食堂</div>
+            <div class="canteen-col" id="canteenList"></div>
+          </div>
+          <div class="pick-main">
+            <div class="pick-cap">档口</div>
+            <div class="stall-col" id="stallList"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="page" id="page-stall-config" data-page="stall-config">
+        <div class="cfg">
+          <div class="cfg-place">
+            <b class="cfg-stall" id="cfgStall"></b>
+            <span class="cfg-canteen" id="cfgCanteen"></span>
+          </div>
+          <div class="cfg-card">
+            <div class="field">
+              <div class="field-line">
+                <div class="field-label">关联展示屏</div>
+                <button class="field-value" id="screenSelect" type="button" data-act="screen">
+                  <span id="screenSelectText">请选择</span>
+                  <span class="chev">›</span>
+                </button>
+              </div>
+            </div>
+            <div class="field">
+              <div class="field-line">
+                <div class="field-label">档口LOGO</div>
+                <div id="logoBox"></div>
+              </div>
+              <p class="cfg-tip">建议尺寸：200*90px，支持 PNG/JPG 格式，大小不超过 10MB</p>
+            </div>
+            <div class="field">
+              <div class="field-line">
+                <div class="field-label">档口宣传图</div>
+                <button class="upload-tile" id="posterAdd" type="button" data-act="poster" aria-label="上传宣传图"><span class="plus">+</span></button>
+              </div>
+              <div class="poster-list" id="posterList"></div>
+              <p class="cfg-tip">最多 4 张，建议尺寸 603*378px，支持拖拽调序，大小不超过 10MB</p>
+            </div>
+            <div class="field">
+              <div class="field-line">
+                <div class="field-label">档口宣传视频</div>
+                <button class="upload-tile" id="videoUpload" type="button" data-act="video" aria-label="上传宣传视频"><span class="plus">+</span></button>
+              </div>
+              <div class="video-name" id="videoName"></div>
+              <p class="cfg-tip">仅可上传 1 个，建议 MP4 格式，分辨率不超过 1080P，大小不超过 100MB</p>
+            </div>
+          </div>
+        </div>
+        <div class="cfg-foot">
+          <button class="cfg-save" id="cfgSave" type="button">保存</button>
+        </div>
+        <input type="file" id="logoFile" accept="image/png,image/jpeg" hidden="">
+        <input type="file" id="posterFile" accept="image/png,image/jpeg" hidden="">
+        <input type="file" id="videoFile" accept="video/mp4,video/*" hidden="">
+      </section>
+    </div>
+
+    <nav class="tabbar" id="tabbar">
+      <button class="tab active" type="button" data-page="home">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3.2 3 11h2.2v8.2h5.1v-5.2h3.4v5.2h5.1V11H21L12 3.2z"></path></svg>
+        主页
+      </button>
+      <button class="tab" type="button" data-page="message">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 6.5h14v9.2H8.2L5 18.2V6.5z"></path></svg>
+        消息
+      </button>
+      <button class="tab" type="button" data-page="work">
+        <svg viewBox="0 0 24 24" fill="currentColor"><rect x="3" y="3" width="7.2" height="7.2" rx="1.4"></rect><rect x="13.8" y="3" width="7.2" height="7.2" rx="1.4"></rect><rect x="3" y="13.8" width="7.2" height="7.2" rx="1.4"></rect><rect x="13.8" y="13.8" width="7.2" height="7.2" rx="1.4"></rect></svg>
+        工作台
+      </button>
+      <button class="tab" type="button" data-page="mine">
+        <svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="8" r="3.2"></circle><path d="M5.2 19.2c1.2-3.2 3.6-4.8 6.8-4.8s5.6 1.6 6.8 4.8"></path></svg>
+        我的
+      </button>
+    </nav>
+    <div class="home-ind-wrap"><div class="home-ind"></div></div>
+
+    <div class="viewer" id="viewer">
+      <button class="viewer-close" id="viewerClose" type="button" aria-label="关闭">×</button>
+      <img id="viewerImg" alt="放大查看" hidden="">
+      <video id="viewerVideo" controls="" playsinline="" hidden=""></video>
+    </div>
+    <div class="help-mask" id="helpMask">
+      <div class="help-panel">
+        <div class="help-hd">
+          <span id="helpTitle">需求说明</span>
+          <button type="button" id="helpClose" aria-label="关闭">×</button>
+        </div>
+        <textarea class="help-editor" id="helpEditor" spellcheck="false"></textarea>
+        <p class="help-note">可直接修改上方内容，点击「保存」后下次打开仍会保留。</p>
+        <div class="help-ft">
+          <button class="help-cancel" id="helpCancel" type="button">取消</button>
+          <button class="help-ok" id="helpSave" type="button">保存</button>
+        </div>
+      </div>
+    </div>
+    <div class="toast" id="toast"></div>
+    <div class="mask" id="mask">
+      <div class="sheet">
+        <div class="sheet-hd"><span id="sheetTitle">请选择</span><button type="button" id="sheetClose" aria-label="关闭">×</button></div>
+        <div class="sheet-bd" id="sheetBody"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const PRISTINE_HTML = "<!DOCTYPE html>\n" + document.documentElement.outerHTML;
+    (function applyEmbeddedHelpDocs() {
+      const data = window.__HELP_DOC_EXPORT__;
+      if (!data || typeof data !== "object") return;
+      Object.keys(data).forEach((key) => {
+        const value = data[key];
+        if (value == null) return;
+        try { localStorage.setItem(key, String(value)); } catch (e) {}
+      });
+    })();
+    const BLUE = "#2f86ff";
+    const ICONS = {
+      qr: `<svg viewBox="0 0 48 48" fill="${BLUE}"><path d="M8 8h14v14H8V8zm4 4v6h6v-6h-6zM26 8h14v14H26V8zm4 4v6h6v-6h-6zM8 26h14v14H8V26zm4 4v6h6v-6h-6zM26 26h4v4h-4v-4zm8 0h6v4h-4v6h-6v-4h4v-6zm-8 8h4v6h-4v-6zm8 4h6v6h-6v-6z"/></svg>`,
+      push: `<svg viewBox="0 0 48 48" fill="${BLUE}"><path d="M24 6l10 10h-6v12h-8V16h-6L24 6z"/><path d="M10 30h6v6h16v-6h6v12H10V30z"/></svg>`,
+      checkin: `<svg viewBox="0 0 48 48" fill="${BLUE}"><path d="M14 8h4V4h4v4h8V4h4v4h6v32H8V8h6zm-2 10v18h24V18H12z"/><path d="M16 28l4 4 10-10 2.4 2.4L20 36l-6.4-6.4L16 28z" fill="#fff"/></svg>`,
+      doc: `<svg viewBox="0 0 48 48" fill="${BLUE}"><path d="M12 6h16l10 10v26H12V6zm16 4v8h8"/><path d="M18 26h14v3H18zm0 7h14v3H18z" fill="#fff"/></svg>`,
+      approve: `<svg viewBox="0 0 48 48" fill="${BLUE}"><circle cx="18" cy="16" r="7"/><path d="M6 38c1.6-7 6-10 12-10 3.2 0 6 .8 8.2 2.4A12 12 0 0 0 28 36v4H6v-2z"/><circle cx="34" cy="30" r="9"/><path d="M30 30.2l2.4 2.4 5.2-5.4 1.6 1.6-6.8 7-4-4 1.6-1.6z" fill="#fff"/></svg>`,
+      building: `<svg viewBox="0 0 48 48" fill="${BLUE}"><path d="M8 42V14l12-6v34H8zm16 0V20h16v22H24z"/><path d="M14 20h4v4h-4zm0 8h4v4h-4zm12-2h4v4h-4zm8 0h4v4h-4zm-8 8h4v4h-4zm8 0h4v4h-4z" fill="#fff"/></svg>`,
+      recharge: `<svg viewBox="0 0 48 48" fill="${BLUE}"><circle cx="22" cy="24" r="14"/><path d="M22 14v20M16 20h8.5a4 4 0 0 1 0 8H16" stroke="#fff" stroke-width="2.4" fill="none"/><circle cx="36" cy="14" r="8"/><path d="M36 10v8M32 14h8" stroke="#fff" stroke-width="2" fill="none"/></svg>`,
+      mail: `<svg viewBox="0 0 48 48" fill="${BLUE}"><path d="M6 12h36v24H6V12zm4 4l14 9 14-9v-1L24 24 10 15v1z"/></svg>`,
+      visitor: `<svg viewBox="0 0 48 48" fill="${BLUE}"><rect x="6" y="10" width="28" height="28" rx="3"/><circle cx="16" cy="21" r="4" fill="#fff"/><path d="M10 32c1-4 3.4-6 6-6s5 2 6 6" fill="#fff"/><path d="M22 16h8v3h-8zm0 6h8v3h-8z" fill="#fff"/><path d="M30 26l8 4v8l-8-3v-9z"/></svg>`,
+      menu: `<svg viewBox="0 0 48 48" fill="${BLUE}"><path d="M10 8h22l8 8v24H10V8z"/><path d="M16 22h16M16 28h16M16 34h10" stroke="#fff" stroke-width="2.4" fill="none"/></svg>`,
+      meal: `<svg viewBox="0 0 48 48" fill="${BLUE}"><path d="M10 20h28a14 10 0 0 1-28 0z"/><path d="M16 20c0-8 16-8 16 0" fill="none" stroke="${BLUE}" stroke-width="3"/><rect x="20" y="30" width="8" height="6"/><rect x="14" y="36" width="20" height="3" rx="1"/></svg>`,
+      record: `<svg viewBox="0 0 48 48" fill="${BLUE}"><path d="M12 6h18l8 8v28H12V6z"/><path d="M18 24h12M18 30h8" stroke="#fff" stroke-width="2.2"/><circle cx="32" cy="32" r="7" fill="#fff"/><path d="M32 29v3.2l2 1.4" stroke="${BLUE}" stroke-width="1.6" fill="none"/></svg>`,
+      review: `<svg viewBox="0 0 48 48" fill="${BLUE}"><path d="M10 8h22l8 8v24H10V8z"/><path d="M24 20l1.8 3.8 4.2.6-3 3 0.7 4.2L24 29.6 20.3 31.6 21 27.4l-3-3 4.2-.6L24 20z" fill="#fff"/></svg>`,
+      bill: `<svg viewBox="0 0 48 48" fill="${BLUE}"><rect x="8" y="6" width="32" height="36" rx="3"/><path d="M16 16h16M16 23h16M16 30h10" stroke="#fff" stroke-width="2.4"/><circle cx="34" cy="32" r="8" fill="#fff"/><path d="M34 28v8M31 31.2h4.2a2.2 2.2 0 1 1 0 4.4H31" stroke="${BLUE}" stroke-width="1.6" fill="none"/></svg>`,
+      wallet: `<svg viewBox="0 0 48 48" fill="${BLUE}"><path d="M8 14h28a6 6 0 0 1 6 6v16a4 4 0 0 1-4 4H10a4 4 0 0 1-4-4V16a2 2 0 0 1 2-2z"/><circle cx="32" cy="26" r="3" fill="#fff"/><path d="M12 14V12a4 4 0 0 1 4-4h16" fill="none" stroke="${BLUE}" stroke-width="3"/></svg>`,
+      share: `<svg viewBox="0 0 48 48" fill="${BLUE}"><circle cx="14" cy="24" r="6"/><circle cx="34" cy="12" r="6"/><circle cx="34" cy="36" r="6"/><path d="M19 21l10-6M19 27l10 6" stroke="#fff" stroke-width="2.4"/></svg>`,
+      couponApply: `<svg viewBox="0 0 48 48" fill="${BLUE}"><path d="M6 16h36v6a5 5 0 0 0 0 10v6H6v-6a5 5 0 0 0 0-10v-6z"/><path d="M18 20v14" stroke="#fff" stroke-width="2" stroke-dasharray="3 3"/><path d="M30 18v6M27 21h6" stroke="#fff" stroke-width="2"/></svg>`,
+      couponOk: `<svg viewBox="0 0 48 48" fill="${BLUE}"><path d="M6 14h28v5a4 4 0 0 0 0 8v5H6v-5a4 4 0 0 0 0-8v-5z"/><path d="M28 30l4 4 8-9" stroke="#fff" stroke-width="3" fill="none"/></svg>`,
+      coupon: `<svg viewBox="0 0 48 48" fill="${BLUE}"><path d="M6 14h36v7a5 5 0 0 0 0 10v7H6v-7a5 5 0 0 0 0-10v-7z"/><path d="M18 18v16" stroke="#fff" stroke-width="2" stroke-dasharray="3 3"/><circle cx="30" cy="26" r="4" fill="#fff"/></svg>`,
+      screen: `<svg viewBox="0 0 48 48" fill="${BLUE}"><rect x="4" y="8" width="40" height="26" rx="3"/><path d="M14 40h20M24 34v6" stroke="${BLUE}" stroke-width="3" fill="none"/><path d="M12 26V18h4v8h-4zm8 0v-5h4v5h-4zm8 0V16h4v10h-4z" fill="#fff"/></svg>`,
+      alert: `<svg viewBox="0 0 48 48" fill="${BLUE}"><path d="M14 8h4V4h4v4h8V4h4v4h6v14H8V8h6z"/><circle cx="32" cy="32" r="10"/><path d="M32 26v7M32 36.5v2" stroke="#fff" stroke-width="2.2"/></svg>`,
+      meeting: `<svg viewBox="0 0 48 48" fill="${BLUE}"><circle cx="16" cy="14" r="5"/><circle cx="32" cy="14" r="5"/><path d="M6 32c1-6 4.5-8 10-8s9 2 10 8H6zm16 2c.6-4 3-6.5 7-7 4 .2 7 2.6 8.4 7H22z"/><rect x="10" y="34" width="28" height="6" rx="1"/></svg>`
+    };
+
+    const HOME_APPS = ["二维码", "信息推送", "考勤打卡", "考勤数据", "考勤审批", "楼宇控制", "充值", "访客邀约", "访客审批", "菜单", "订餐", "订餐记录", "评价记录"];
+    const WORK_GROUPS = [
+      { title: "访客应用", apps: ["访客邀约", "访客审批"] },
+      { title: "考勤应用", apps: ["考勤打卡", "考勤数据", "考勤异常申请", "考勤审批"] },
+      { title: "消费应用", apps: ["充值", "收支明细", "钱包", "菜单", "订餐", "订餐记录", "评价记录", "分享码", "消费券申请", "消费券审批", "消费券", "档口显示屏"] },
+      { title: "空间应用", apps: ["楼宇控制", "会议室管理", "信息推送"] }
+    ];
+    const APP_ICON = {
+      "二维码": "qr", "信息推送": "push", "考勤打卡": "checkin", "考勤数据": "doc",
+      "考勤审批": "approve", "楼宇控制": "building", "充值": "recharge", "访客邀约": "mail",
+      "访客审批": "visitor", "菜单": "menu", "订餐": "meal", "订餐记录": "record",
+      "评价记录": "review", "收支明细": "bill", "钱包": "wallet", "分享码": "share",
+      "消费券申请": "couponApply", "消费券审批": "couponOk", "消费券": "coupon",
+      "档口显示屏": "screen", "考勤异常申请": "alert", "会议室管理": "meeting"
+    };
+
+    const CANTEENS = [
+      { id: "c1", name: "一食堂", stalls: [
+        { id: "s1", name: "蒸蒸日上" },
+        { id: "s2", name: "称重自选" },
+        { id: "s3", name: "一品鲜焖锅" }
+      ]},
+      { id: "c2", name: "二食堂", stalls: [
+        { id: "s4", name: "滋滋烤鱼" },
+        { id: "s5", name: "粤港菜系" },
+        { id: "s6", name: "川味小炒" },
+        { id: "s7", name: "面点工坊" }
+      ]},
+      { id: "c3", name: "7F 餐厅", stalls: [
+        { id: "s8", name: "轻食沙拉" },
+        { id: "s9", name: "滋补汤品" },
+        { id: "s10", name: "甜品站" }
+      ]}
+    ];
+    const DISPLAY_SCREENS = [
+      { id: "ARMMJ00000001C54E6", name: "消费点菜品32寸屏" },
+      { id: "ARMMJ00000002D61A8", name: "档口排行展示屏" },
+      { id: "ARMMJ00000003E72B9", name: "一食堂展示屏" }
+    ];
+    const DOORS = ["南门大堂", "北门大堂", "7F 办公区", "食堂入口"];
+    const FLOORS = ["B1", "1F", "2F", "3F", "4F", "5F", "6F", "7F", "8F", "9F", "10F", "11F", "12F", "13F", "14F"];
+
+    const navText = document.getElementById("navText");
+    const navExtra = document.getElementById("navExtra");
+    const nav = document.getElementById("nav");
+    const tabbar = document.getElementById("tabbar");
+    const PAGES = ["home", "message", "work", "mine", "stall", "stall-config"];
+    let doorName = "";
+    let pickTarget = "from";
+    let canteenId = CANTEENS[0].id;
+    let currentStall = null;
+    let draft = null;
+    const savedMedia = {};
+    let posterDrag = -1;
+    let suppressPosterClick = false;
+
+    function appButton(name) {
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "app-item";
+      btn.dataset.app = name;
+      btn.innerHTML = `<span class="ico">${ICONS[APP_ICON[name]]}</span><em>${name}</em>`;
+      return btn;
+    }
+
+    function renderApps() {
+      const home = document.getElementById("homeApps");
+      HOME_APPS.forEach((name) => home.appendChild(appButton(name)));
+      const work = document.getElementById("workBody");
+      WORK_GROUPS.forEach((group) => {
+        const card = document.createElement("div");
+        card.className = "card work-card";
+        const hd = document.createElement("div");
+        hd.className = "block-hd";
+        hd.innerHTML = `<i></i>${group.title}`;
+        const grid = document.createElement("div");
+        grid.className = "app-grid";
+        group.apps.forEach((name) => grid.appendChild(appButton(name)));
+        card.appendChild(hd);
+        card.appendChild(grid);
+        work.appendChild(card);
+      });
+      const mine = document.getElementById("mineList");
+      ["我的二维码", "我的订单", "我的钱包", "设置"].forEach((label) => {
+        const row = document.createElement("button");
+        row.type = "button";
+        row.className = "mine-row";
+        row.dataset.app = label;
+        row.innerHTML = `<span>${label}</span><span class="arrow">›</span>`;
+        mine.appendChild(row);
+      });
+    }
+
+    function tickClock() {
+      const now = new Date();
+      const h = now.getHours();
+      const m = String(now.getMinutes()).padStart(2, "0");
+      const ap = h < 12 ? "上午" : "下午";
+      const hh = h % 12 === 0 ? 12 : h % 12;
+      document.getElementById("clock").textContent = `${ap}${hh}:${m}`;
+    }
+
+    let toastTimer = 0;
+    function toast(text) {
+      const el = document.getElementById("toast");
+      el.textContent = text;
+      el.classList.add("show");
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => el.classList.remove("show"), 1600);
+    }
+
+    function showPage(name, push) {
+      if (name === "stall-config" && !currentStall) name = "stall";
+      document.querySelectorAll(".page").forEach((p) => p.classList.toggle("active", p.dataset.page === name));
+      document.querySelectorAll(".tab").forEach((t) => t.classList.toggle("active", t.dataset.page === name));
+      const sub = name === "stall" || name === "stall-config";
+      nav.classList.toggle("sub", sub);
+      tabbar.classList.toggle("hide", sub);
+      navExtra.style.display = name === "home" ? "" : "none";
+      document.getElementById("navHelp").hidden = !(name === "stall" || name === "stall-config");
+      const titles = {
+        home: "深圳达实智能股份有限公司",
+        message: "消息",
+        work: "工作台",
+        mine: "我的",
+        stall: "选择档口",
+        "stall-config": "展示屏设置"
+      };
+      navText.textContent = titles[name] || "";
+      const hash = "#" + name;
+      if (push) history.pushState({ page: name }, "", hash);
+      else if (location.hash !== hash) history.replaceState({ page: name }, "", hash);
+      if (name === "stall") renderPick();
+      if (name === "stall-config") renderConfig();
+    }
+
+    function openSheet(title, html) {
+      document.getElementById("sheetTitle").textContent = title;
+      document.getElementById("sheetBody").innerHTML = html;
+      document.getElementById("mask").classList.add("show");
+    }
+    function closeSheet() {
+      document.getElementById("mask").classList.remove("show");
+    }
+
+    function renderDoor() {
+      const box = document.getElementById("doorCopy");
+      if (!doorName) {
+        box.innerHTML = "<strong>点击设置常用门禁</strong><p>设置完成后，一键可快速开门</p>";
+        return;
+      }
+      box.innerHTML = `<strong>${doorName}</strong><p>已设为常用门禁</p><span class="open-btn" id="openDoor">开门</span>`;
+    }
+
+    function blankMedia() {
+      return { screenId: "", logo: "", posters: [], videoName: "", videoUrl: "" };
+    }
+    function mediaReady(media) {
+      return !!(media && (media.screenId || media.logo || (media.posters && media.posters.length) || media.videoName));
+    }
+    function findStall(id) {
+      for (const canteen of CANTEENS) {
+        const stall = canteen.stalls.find((s) => s.id === id);
+        if (stall) return { canteen, stall };
+      }
+      return null;
+    }
+    function renderPick() {
+      const canteenBox = document.getElementById("canteenList");
+      const stallBox = document.getElementById("stallList");
+      canteenBox.innerHTML = CANTEENS.map((c) =>
+        `<button class="canteen-item${c.id === canteenId ? " on" : ""}" type="button" data-canteen="${c.id}">${c.name}</button>`
+      ).join("");
+      const canteen = CANTEENS.find((c) => c.id === canteenId) || CANTEENS[0];
+      stallBox.innerHTML = canteen.stalls.map((s) => {
+        const done = mediaReady(savedMedia[s.id]) ? `<span class="done">已配置</span>` : "";
+        return `<button class="stall-item" type="button" data-stall="${s.id}"><span>${s.name}</span>${done}<span class="arrow">›</span></button>`;
+      }).join("");
+    }
+    function openStall(stallId) {
+      const found = findStall(stallId);
+      if (!found) return;
+      currentStall = { id: found.stall.id, name: found.stall.name, canteen: found.canteen.name };
+      draft = JSON.parse(JSON.stringify(savedMedia[found.stall.id] || blankMedia()));
+      showPage("stall-config", true);
+    }
+    function renderConfig() {
+      document.getElementById("cfgStall").textContent = currentStall ? currentStall.name : "";
+      document.getElementById("cfgCanteen").textContent = currentStall ? currentStall.canteen : "";
+      const screen = DISPLAY_SCREENS.find((item) => item.id === draft.screenId);
+      const screenBtn = document.getElementById("screenSelect");
+      screenBtn.classList.toggle("on", !!screen);
+      document.getElementById("screenSelectText").textContent = screen ? screen.name : "请选择";
+      const logoBox = document.getElementById("logoBox");
+      if (draft.logo) {
+        logoBox.innerHTML = `
+          <div class="logo-set" data-act="logo-view" role="button" tabindex="0" aria-label="放大查看LOGO">
+            <img src="${draft.logo}" alt="档口LOGO" />
+            <button class="poster-del" type="button" data-act="logo-del" aria-label="删除LOGO">×</button>
+          </div>`;
+      } else {
+        logoBox.innerHTML = `<button class="upload-tile" type="button" data-act="logo" aria-label="上传LOGO"><span class="plus">+</span></button>`;
+      }
+      const list = document.getElementById("posterList");
+      const cards = draft.posters.map((url, i) => `
+        <div class="poster-item" draggable="true" data-act="poster-view" data-index="${i}" role="button" tabindex="0" aria-label="放大查看宣传图${i + 1}">
+          <img src="${url}" alt="宣传图${i + 1}" />
+          <button class="poster-del" type="button" data-act="poster-del" data-index="${i}" aria-label="删除宣传图">×</button>
+        </div>`).join("");
+      document.getElementById("posterAdd").hidden = draft.posters.length >= 4;
+      list.innerHTML = cards;
+      list.querySelectorAll(".poster-item").forEach((item) => {
+        item.addEventListener("dragstart", (e) => {
+          posterDrag = Number(item.dataset.index);
+          suppressPosterClick = true;
+          e.dataTransfer.effectAllowed = "move";
+          item.classList.add("dragging");
+        });
+        item.addEventListener("dragend", () => item.classList.remove("dragging"));
+        item.addEventListener("dragover", (e) => e.preventDefault());
+        item.addEventListener("drop", (e) => {
+          e.preventDefault();
+          movePoster(posterDrag, Number(item.dataset.index));
+        });
+        item.addEventListener("pointerdown", (e) => {
+          if (e.pointerType === "mouse" || e.target.closest("[data-act]")) return;
+          posterDrag = Number(item.dataset.index);
+          item.classList.add("dragging");
+          item.setPointerCapture(e.pointerId);
+        });
+        item.addEventListener("pointerup", (e) => {
+          if (e.pointerType === "mouse") return;
+          item.classList.remove("dragging");
+          item.style.pointerEvents = "none";
+          const hit = document.elementFromPoint(e.clientX, e.clientY);
+          item.style.pointerEvents = "";
+          const target = hit && hit.closest(".poster-item");
+          movePoster(posterDrag, target ? Number(target.dataset.index) : -1);
+        });
+      });
+      const video = document.getElementById("videoName");
+      const hasVideo = !!draft.videoName;
+      document.getElementById("videoUpload").hidden = hasVideo;
+      const videoLabel = (draft.videoName || "").replace(/[&<>"']/g, (ch) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[ch]));
+      video.innerHTML = hasVideo
+        ? `<button class="video-play" type="button" data-act="video-play">▶ ${videoLabel}</button><button class="linkish" type="button" data-act="video-del">删除</button>`
+        : "";
+    }
+    function movePoster(from, to) {
+      posterDrag = -1;
+      if (from < 0 || to < 0 || from === to || !draft) return;
+      const [moved] = draft.posters.splice(from, 1);
+      draft.posters.splice(to, 0, moved);
+      renderConfig();
+    }
+    function readMedia(file, maxMB, ok) {
+      if (!file) return;
+      if (file.size > maxMB * 1024 * 1024) {
+        toast(`文件不能超过 ${maxMB}MB`);
+        return;
+      }
+      const reader = new FileReader();
+      reader.onload = () => ok(String(reader.result || ""), file.name);
+      reader.readAsDataURL(file);
+    }
+
+    document.getElementById("device").addEventListener("click", (e) => {
+      const go = e.target.closest("[data-go]");
+      if (go) { showPage(go.dataset.page || go.dataset.go, false); return; }
+      const tab = e.target.closest(".tab");
+      if (tab) { showPage(tab.dataset.page, false); return; }
+      const app = e.target.closest("[data-app]");
+      if (app) {
+        if (app.dataset.app === "档口显示屏") showPage("stall", true);
+        else toast(`「${app.dataset.app}」即将开放`);
+        return;
+      }
+      const canteenBtn = e.target.closest("[data-canteen]");
+      if (canteenBtn) {
+        canteenId = canteenBtn.dataset.canteen;
+        renderPick();
+        return;
+      }
+      const stallBtn = e.target.closest("[data-stall]");
+      if (stallBtn) { openStall(stallBtn.dataset.stall); return; }
+      const chip = e.target.closest(".chip");
+      if (chip) {
+        document.getElementById("fromFloor").textContent = chip.dataset.from;
+        document.getElementById("toFloor").textContent = chip.dataset.to;
+        return;
+      }
+    });
+
+    document.getElementById("toWork").addEventListener("click", () => showPage("work", false));
+    function openViewer(kind, url) {
+      if (!url) return;
+      const img = document.getElementById("viewerImg");
+      const video = document.getElementById("viewerVideo");
+      if (kind === "video") {
+        img.hidden = true;
+        img.removeAttribute("src");
+        video.hidden = false;
+        video.src = url;
+        video.play().catch(() => {});
+      } else {
+        video.pause();
+        video.removeAttribute("src");
+        video.hidden = true;
+        img.hidden = false;
+        img.src = url;
+      }
+      document.getElementById("viewer").classList.add("show");
+    }
+    function closeViewer() {
+      const video = document.getElementById("viewerVideo");
+      video.pause();
+      video.removeAttribute("src");
+      video.load();
+      document.getElementById("viewerImg").removeAttribute("src");
+      document.getElementById("viewer").classList.remove("show");
+    }
+    const HELP_DOCS = {
+      stall: {
+        title: "选择档口 - 需求说明",
+        key: "mobile_stall_pick_help_v1",
+        text: [
+          "1. 从工作台「消费应用 - 档口显示屏」进入，先打开档口选择页。",
+          "2. 选择页为食堂、档口两级：左侧选择食堂，右侧展示该食堂下的档口。",
+          "3. 点击档口进入「展示屏设置」。",
+          "4. 已保存展示屏配置的档口显示「已配置」。"
+        ].join("\n")
+      },
+      "stall-config": {
+        title: "展示屏设置 - 需求说明",
+        key: "mobile_screen_setting_help_v2",
+        text: [
+          "1. 页面标题为「展示屏设置」，所选档口名称和所属食堂展示在页面内。",
+          "2. 关联展示屏选填，不选也可以保存。",
+          "3. 档口LOGO、档口宣传图、档口宣传视频的上传入口统一为标题右侧虚线加号。",
+          "4. 档口LOGO仅 1 张，支持 PNG/JPG，建议尺寸 200*90px，大小不超过 10MB。点击图片可放大查看，右上角删除；更换需删除后重新上传。",
+          "5. 档口宣传图最多 4 张，支持 PNG/JPG，建议尺寸 603*378px，大小不超过 10MB，支持拖拽调序。点击图片可放大查看，右上角删除。满 4 张后隐藏上传入口。",
+          "6. 档口宣传视频仅可上传 1 个，建议 MP4，分辨率不超过 1080P，大小不超过 100MB。上传后隐藏上传按钮，点击文件名可播放，删除后可重新上传。",
+          "7. 保存后写入当前档口，返回选择页时该档口标记为已配置。"
+        ].join("\n")
+      }
+    };
+    function readHelp(key, fallback) {
+      try {
+        const value = localStorage.getItem(key);
+        return value == null || value === "" ? fallback : value;
+      } catch (e) {
+        return fallback;
+      }
+    }
+    function openHelp() {
+      const page = document.querySelector(".page.active");
+      const doc = page && HELP_DOCS[page.dataset.page];
+      if (!doc) return;
+      document.getElementById("helpTitle").textContent = doc.title;
+      document.getElementById("helpEditor").value = readHelp(doc.key, doc.text);
+      document.getElementById("helpEditor").dataset.key = doc.key;
+      document.getElementById("helpMask").classList.add("show");
+    }
+    function closeHelp() {
+      document.getElementById("helpMask").classList.remove("show");
+    }
+    document.getElementById("navHelp").addEventListener("click", (e) => {
+      e.stopPropagation();
+      openHelp();
+    });
+    document.getElementById("helpClose").addEventListener("click", closeHelp);
+    document.getElementById("helpCancel").addEventListener("click", closeHelp);
+    document.getElementById("helpMask").addEventListener("click", (e) => {
+      if (e.target.id === "helpMask") closeHelp();
+    });
+    document.getElementById("helpSave").addEventListener("click", () => {
+      const editor = document.getElementById("helpEditor");
+      try { localStorage.setItem(editor.dataset.key, editor.value); } catch (e) {}
+      closeHelp();
+      toast("需求说明已保存");
+    });
+    function collectHelpDocsForExport() {
+      const docs = {};
+      let filled = 0;
+      Object.keys(HELP_DOCS).forEach((page) => {
+        const item = HELP_DOCS[page];
+        const text = readHelp(item.key, item.text);
+        docs[item.key] = text;
+        if (String(text || "").trim()) filled += 1;
+      });
+      return { docs, filled, total: Object.keys(HELP_DOCS).length };
+    }
+    function buildHtmlWithHelpDocs(docs) {
+      const finish = (source) => {
+        const exportTagOpen = "<script id=\"help-doc-" + "export-data\">";
+        const exportTagClose = "</" + "script>";
+        let next = source.replace(new RegExp(exportTagOpen + "[\\s\\S]*?" + exportTagClose + "\\s*", "gi"), "");
+        const payload = JSON.stringify(docs).replace(/</g, "\\u003c");
+        const block = exportTagOpen + "window.__HELP_DOC_EXPORT__=" + payload + ";" + exportTagClose + "\n";
+        if (/<head[^>]*>/i.test(next)) next = next.replace(/<head[^>]*>/i, (m) => m + "\n" + block);
+        else next = block + next;
+        return next;
+      };
+      if (/^https?:$/.test(location.protocol)) {
+        return fetch(location.href, { cache: "no-store" })
+          .then((res) => (res.ok ? res.text() : PRISTINE_HTML))
+          .catch(() => PRISTINE_HTML)
+          .then((source) => finish(source || PRISTINE_HTML));
+      }
+      return Promise.resolve(finish(PRISTINE_HTML));
+    }
+    function downloadTextFile(filename, text) {
+      const blob = new Blob([text], { type: "text/html;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+    }
+    document.getElementById("btnExportHelpDocs").addEventListener("click", (e) => {
+      e.stopPropagation();
+      const { docs, filled, total } = collectHelpDocsForExport();
+      if (!filled) { toast("暂无已填写的需求说明可导出"); return; }
+      buildHtmlWithHelpDocs(docs).then((html) => {
+        const stamp = new Date().toISOString().slice(0, 10);
+        downloadTextFile("mobile-含需求说明-" + stamp + ".html", html);
+        toast("已导出 " + filled + "/" + total + " 份需求说明");
+      }).catch(() => toast("导出失败，请重试"));
+    });
+    document.getElementById("navBack").addEventListener("click", () => {
+      if (document.getElementById("helpMask").classList.contains("show")) { closeHelp(); return; }
+      if (document.getElementById("viewer").classList.contains("show")) { closeViewer(); return; }
+      history.back();
+    });
+    document.getElementById("sheetClose").addEventListener("click", closeSheet);
+    document.getElementById("mask").addEventListener("click", (e) => { if (e.target.id === "mask") closeSheet(); });
+
+    document.getElementById("doorCard").addEventListener("click", (e) => {
+      if (e.target.id === "openDoor") {
+        e.stopPropagation();
+        toast(`${doorName} 已开门`);
+        return;
+      }
+      openSheet("设置常用门禁", DOORS.map((d) =>
+        `<button class="opt${d === doorName ? " on" : ""}" type="button" data-door="${d}">${d}</button>`
+      ).join(""));
+    });
+    document.getElementById("doorMore").addEventListener("click", () => {
+      document.getElementById("doorCard").click();
+    });
+
+    document.getElementById("sheetBody").addEventListener("click", (e) => {
+      const door = e.target.closest("[data-door]");
+      if (door) {
+        doorName = door.dataset.door;
+        renderDoor();
+        closeSheet();
+        toast(`已设置常用门禁：${doorName}`);
+        return;
+      }
+      const screen = e.target.closest("[data-screen]");
+      if (screen && draft) {
+        draft.screenId = screen.dataset.screen;
+        renderConfig();
+        closeSheet();
+        return;
+      }
+      const floor = e.target.closest("[data-floor]");
+      if (floor) {
+        document.getElementById(pickTarget === "from" ? "fromFloor" : "toFloor").textContent = floor.dataset.floor;
+        closeSheet();
+      }
+    });
+
+    function openFloor(which) {
+      pickTarget = which;
+      const current = document.getElementById(which === "from" ? "fromFloor" : "toFloor").textContent;
+      openSheet(which === "from" ? "选择起始楼层" : "选择到达楼层",
+        `<div class="floor-grid">${FLOORS.map((f) => `<button type="button" data-floor="${f}" class="${f === current ? "on" : ""}">${f}</button>`).join("")}</div>`);
+    }
+    document.getElementById("fromFloor").addEventListener("click", () => openFloor("from"));
+    document.getElementById("toFloor").addEventListener("click", () => openFloor("to"));
+    document.getElementById("swapFloor").addEventListener("click", () => {
+      const a = document.getElementById("fromFloor");
+      const b = document.getElementById("toFloor");
+      const t = a.textContent;
+      a.textContent = b.textContent;
+      b.textContent = t;
+    });
+    document.getElementById("callLift").addEventListener("click", () => {
+      const from = document.getElementById("fromFloor").textContent;
+      const to = document.getElementById("toFloor").textContent;
+      if (from === to) { toast("起始楼层与到达楼层相同"); return; }
+      toast(`正在呼叫电梯：${from} → ${to}`);
+    });
+    document.getElementById("liftMore").addEventListener("click", () => toast("可点楼层修改，或点下方记录快速填充"));
+
+    document.getElementById("page-stall-config").addEventListener("click", (e) => {
+      const act = e.target.closest("[data-act]");
+      if (!act || !draft) return;
+      const action = act.dataset.act;
+      if (action === "screen") {
+        openSheet("关联展示屏", DISPLAY_SCREENS.map((item) =>
+          `<button class="opt${item.id === draft.screenId ? " on" : ""}" type="button" data-screen="${item.id}">${item.name}</button>`
+        ).join(""));
+      }
+      if (action === "logo") document.getElementById("logoFile").click();
+      if (action === "logo-view") openViewer("image", draft.logo);
+      if (action === "logo-del") { draft.logo = ""; renderConfig(); }
+      if (action === "poster") document.getElementById("posterFile").click();
+      if (action === "poster-view") {
+        if (suppressPosterClick) { suppressPosterClick = false; return; }
+        openViewer("image", draft.posters[Number(act.dataset.index)]);
+      }
+      if (action === "poster-del") {
+        draft.posters.splice(Number(act.dataset.index), 1);
+        renderConfig();
+      }
+      if (action === "video") {
+        if (draft.videoName) { toast("宣传视频只能上传 1 个"); return; }
+        document.getElementById("videoFile").click();
+      }
+      if (action === "video-play") openViewer("video", draft.videoUrl);
+      if (action === "video-del") { draft.videoName = ""; draft.videoUrl = ""; renderConfig(); }
+    });
+    document.getElementById("viewer").addEventListener("click", (e) => {
+      if (e.target.id === "viewer" || e.target.id === "viewerClose" || e.target.id === "viewerImg") closeViewer();
+    });
+    document.getElementById("logoFile").addEventListener("change", () => {
+      const input = document.getElementById("logoFile");
+      const file = input.files[0];
+      input.value = "";
+      if (!file || !draft) return;
+      if (!/^image\/(png|jpeg)$/.test(file.type)) { toast("请上传 PNG/JPG 图片"); return; }
+      readMedia(file, 10, (url) => { draft.logo = url; renderConfig(); });
+    });
+    document.getElementById("posterFile").addEventListener("change", () => {
+      const input = document.getElementById("posterFile");
+      const file = input.files[0];
+      input.value = "";
+      if (!file || !draft) return;
+      if (draft.posters.length >= 4) { toast("宣传图最多 4 张"); return; }
+      if (!/^image\/(png|jpeg)$/.test(file.type)) { toast("请上传 PNG/JPG 图片"); return; }
+      readMedia(file, 10, (url) => { draft.posters.push(url); renderConfig(); });
+    });
+    document.getElementById("videoFile").addEventListener("change", () => {
+      const input = document.getElementById("videoFile");
+      const file = input.files[0];
+      input.value = "";
+      if (!file || !draft) return;
+      if (draft.videoName) { toast("宣传视频只能上传 1 个"); return; }
+      const isMp4 = file.type === "video/mp4" || /\.mp4$/i.test(file.name);
+      if (!isMp4) { toast("请上传 MP4 视频"); return; }
+      readMedia(file, 100, (url, name) => { draft.videoUrl = url; draft.videoName = name; renderConfig(); });
+    });
+    document.getElementById("cfgSave").addEventListener("click", () => {
+      if (!currentStall || !draft) return;
+      savedMedia[currentStall.id] = JSON.parse(JSON.stringify(draft));
+      toast("档口展示内容已保存");
+    });
+
+    window.addEventListener("popstate", () => {
+      const name = (location.hash || "#home").slice(1);
+      showPage(PAGES.includes(name) ? name : "home", false);
+    });
+
+    renderApps();
+    tickClock();
+    setInterval(tickClock, 10000);
+    const initial = (location.hash || "#home").slice(1);
+    showPage(PAGES.includes(initial) ? initial : "home", false);
+  </script></body></html>
