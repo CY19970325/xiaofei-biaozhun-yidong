@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="zh-CN"><head>
-<script id="help-doc-export-data">window.__HELP_DOC_EXPORT__={"mobile_stall_pick_help_v1":"1. 消费应用新增一个档口显示屏，点击进入档口选择页\n2. 选择页为食堂、档口两级：左侧选择食堂，右侧展示该食堂下的档口。（根据当前登录用户商户数据权过滤，无商户数据权的显示暂无档口数据）\n3. 点击档口进入「展示屏设置」。\n4. 已保存展示屏配置的档口显示「已配置」。","mobile_screen_setting_help_v2":"1. 页面标题为「展示屏设置」，所选档口名称和所属食堂展示在页面内。\n2.与后台展示屏设置的数据互通，保留两端最新一次设置的数据。\n3. 关联展示屏选填，不选也可以保存。\n4. 档口LOGO、档口宣传图、档口宣传视频的上传入口统一为标题右侧虚线加号。\n5. 档口LOGO仅 1 张，支持 PNG/JPG，建议尺寸 200*90px，大小不超过 10MB。点击图片可放大查看，右上角删除；更换需删除后重新上传。\n6. 档口宣传图最多 4 张，支持 PNG/JPG，建议尺寸 603*378px，大小不超过 10MB，支持拖拽调序。点击图片可放大查看，右上角删除。满 4 张后隐藏上传入口。\n7. 档口宣传视频仅可上传 1 个，建议 MP4，分辨率不超过 1080P，大小不超过 100MB。上传后隐藏上传按钮，点击文件名可播放，删除后可重新上传。\n8. 保存后写入当前档口，返回选择页时该档口标记为已配置。\n"};</script>
+<script id="help-doc-export-data">window.__HELP_DOC_EXPORT__={"mobile_stall_pick_help_v1":"1. 消费应用新增一个档口显示屏，点击进入档口选择页\n2. 选择页为食堂、档口两级：左侧选择食堂，右侧展示该食堂下的档口。（根据当前登录用户商户数据权过滤，无商户数据权的显示暂无档口数据）\n3. 点击档口进入「展示屏设置」。\n4. 已保存展示屏配置的档口显示「已配置」。","mobile_screen_setting_help_v2":"1. 页面标题为「展示屏设置」，所选档口名称和所属食堂展示在页面内。\n2.与后台展示屏设置的数据互通，保留两端最新一次设置的数据。\n3. 关联展示屏选填，不选也可以保存。\n4. 档口LOGO、档口宣传图、档口宣传视频的上传入口统一为标题右侧虚线加号。\n5. 档口LOGO仅 1 张，支持 PNG/JPG，建议尺寸 200*90px，大小不超过 10MB。点击图片可放大查看，右上角删除；更换需删除后重新上传。\n6. 档口宣传图最多 4 张，支持 PNG/JPG，建议尺寸 603*378px，大小不超过 10MB，支持拖拽调序。点击图片可放大查看，右上角删除。满 4 张后隐藏上传入口。\n7. 档口宣传视频仅可上传 1 个，建议 MP4，分辨率不超过 1080P，大小不超过 100MB。上传后隐藏上传按钮，点击文件名可播放，删除后可重新上传。\n8. 保存后写入当前档口，返回选择页时该档口标记为已配置。\n","mobile_jiangling_home_help_v1":"1、该项目纯内网部署，移动端h5部署一个内网链接，员工通过微信/支付宝访问该链接\n2、登录：先注册，输姓名工号验证人员后设置登录密码（同标准版），注册成功后输工号和密码登录\n3、首页放标准版钱包和收支明细\n4、我的：个人信息、修改密码、修改支付密码（柳钢定制版本，其他为标准版本）、退出登录","mobile_jiangling_pay_help_v1":"1、进入路径：打开微信/支付宝扫一扫消费点收款码跳转人员验证页，输入姓名、工号（人员编号）和支付密码绑定人员（验证信息长期缓存，下次进入付款页无需验证）\n2、进入对应消费点的付款页（离线收款码匿名支付h5上改造），单价模式，可输入金额\n3、付款：输入当前验证人员的支付密码，未修改支付密码的提示请先修改初始化支付密码，支付密码验证通过发起扣费，按消费点钱包顺序扣费，支付成功页面增加各个扣费钱包的扣费金额"};</script>
 
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
@@ -25,6 +25,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      gap: 36px;
     }
     button, input { font-family: inherit; }
     button { border: 0; background: none; cursor: pointer; color: inherit; }
@@ -40,10 +41,46 @@
       flex-direction: column;
       box-shadow: 0 18px 50px rgba(20, 35, 60, 0.22);
     }
+    .project-side { width: 220px; flex-shrink: 0; }
+    .project-card {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(20, 35, 60, 0.12);
+      overflow: hidden;
+    }
+    .project-hd { padding: 14px 16px 8px; font-size: 13px; color: #8b8f97; }
+    .project-item {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 16px;
+      font-size: 15px;
+      text-align: left;
+      border-top: 1px solid #f2f3f5;
+    }
+    .project-item.on { color: var(--blue); font-weight: 650; background: #f3f8ff; }
+    .project-mark { width: 8px; height: 8px; border-radius: 50%; background: #d0d5dd; flex-shrink: 0; }
+    .project-item.on .project-mark { background: var(--blue); }
+    .project-label {
+      padding: 14px 16px 4px;
+      font-size: 15px;
+      font-weight: 650;
+      border-top: 1px solid #f2f3f5;
+    }
+    .project-item.sub { padding: 10px 16px 10px 34px; font-size: 14px; border-top: 0; }
+    @media (max-width: 760px) {
+      body { flex-direction: column; justify-content: flex-start; padding: 56px 12px 12px; gap: 12px; }
+      .project-side { width: min(390px, 100%); }
+      .device { align-self: center; }
+    }
     @media (max-width: 480px) {
-      body { background: var(--bg); }
-      .device { width: 100%; height: 100%; box-shadow: none; }
+      body { background: #d5dbe3; padding: 52px 0 0; }
+      .device { width: 100%; height: calc(100% - 64px); box-shadow: none; }
       .help-export-btn { top: auto; bottom: 78px; left: 12px; }
+      .project-card { display: flex; align-items: center; border-radius: 0; box-shadow: none; }
+      .project-hd { padding: 0 12px; }
+      .project-item { width: auto; border-top: 0; padding: 12px; }
     }
     .help-export-btn {
       position: fixed;
@@ -174,6 +211,13 @@
       width: 22px; height: 22px;
       color: #8e939c;
     }
+    .jl-home-help {
+      margin-left: auto;
+      color: var(--blue);
+      font-size: 13px;
+      padding: 0 2px;
+    }
+    .jl-home-help[hidden] { display: none; }
 
     .home-body { padding: 8px 12px 4px; }
     .work-body, .plain { padding: 8px 12px 12px; }
@@ -248,6 +292,252 @@
     .app-item:active { background: #f3f6fb; }
     .app-item .ico { width: 28px; height: 28px; }
     .app-item .ico svg { width: 28px; height: 28px; display: block; }
+    #device.jl[data-screen="home"] > #nav { display: none; }
+    #device.jl .home-extra,
+    #device.jl #toWork,
+    #device.jl .home-more,
+    #device.jl .tab[data-page="message"],
+    #device.jl .tab[data-page="work"] { display: none; }
+    #device.jl .tabbar { display: grid; grid-template-columns: repeat(4, 1fr); }
+    #device.jl .tabbar.hide { display: none; }
+    #device.jl .tab[data-page="home"] { grid-column: 1; }
+    #device.jl .tab[data-page="mine"] { grid-column: 4; }
+    #device.jl[data-screen="mine"] > #nav { display: none; }
+    #device.jl[data-screen="mine"] > .status {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      z-index: 6;
+      background: transparent;
+      color: #fff;
+    }
+    #device.jl[data-screen="mine"] > .status .status-right { color: #fff; }
+    #device.jl[data-screen="mine"] > .status svg { filter: brightness(0) invert(1); }
+    .mine-jl { display: none; min-height: 100%; background: #f3f5f8; }
+    #device.jl .mine-std { display: none; }
+    #device.jl .mine-jl { display: block; }
+    .jl-mine-top {
+      position: relative;
+      padding: 28px 16px 48px;
+      text-align: center;
+      color: #fff;
+      background: linear-gradient(180deg, #3d97ff 0%, #5eb0ff 70%, #8ec8ff 100%);
+      overflow: hidden;
+    }
+    .jl-mine-top::before,
+    .jl-mine-top::after {
+      content: "";
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.14);
+    }
+    .jl-mine-top::before { width: 180px; height: 180px; left: -70px; top: -40px; }
+    .jl-mine-top::after { width: 140px; height: 140px; right: -36px; top: 18px; }
+    .jl-mine-bar {
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      position: relative;
+    }
+    .jl-mine-bar b {
+      position: absolute;
+      left: 0; right: 0;
+      text-align: center;
+      font-size: 17px;
+      font-weight: 600;
+      pointer-events: none;
+    }
+    .jl-mine-bar .capsule { position: relative; z-index: 1; background: rgba(255, 255, 255, 0.92); }
+    .jl-avatar {
+      width: 74px; height: 74px;
+      margin: 8px auto 0;
+      border-radius: 50%;
+      overflow: hidden;
+      background: #e44545;
+      box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.35);
+    }
+    .jl-avatar svg { width: 74px; height: 74px; display: block; }
+    .jl-mine-name { margin-top: 10px; font-size: 16px; position: relative; }
+    .jl-mine-card {
+      margin: -28px 16px 0;
+      background: #fff;
+      border-radius: 12px;
+      overflow: hidden;
+      position: relative;
+      box-shadow: 0 8px 20px rgba(30, 70, 130, 0.06);
+    }
+    .jl-row {
+      width: 100%;
+      height: 52px;
+      padding: 0 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 15px;
+      color: #222;
+      border-bottom: 1px solid #f2f3f5;
+      text-align: left;
+    }
+    .jl-row:last-child { border-bottom: 0; }
+    .jl-row .arrow { color: #c5c8ce; font-size: 18px; }
+    .jl-sheet { padding: 12px; }
+    .jl-sheet .auth-card { box-shadow: none; }
+    .jl-sheet .auth-row b { margin-left: auto; font-weight: 500; color: #606266; }
+    #page-jl-pay.active { display: flex; flex-direction: column; background: #fff; }
+    .pay-body { flex: 1; min-height: 0; padding: 4px 16px 12px; overflow: auto; }
+    .pay-point { padding: 10px 0 14px; font-size: 16px; font-weight: 650; }
+    .pay-amount {
+      height: 52px;
+      border: 1px solid #e6e6e6;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 0 12px;
+      font-size: 20px;
+    }
+    .pay-amount input {
+      flex: 1;
+      min-width: 0;
+      border: 0;
+      outline: none;
+      background: transparent;
+      font-size: 20px;
+      color: #222;
+    }
+    .pay-amount input::placeholder { color: #c5c5c5; font-size: 16px; }
+    .pay-note-btn { margin-top: 14px; color: #2f86ff; font-size: 14px; }
+    .pay-note {
+      width: 100%;
+      margin-top: 8px;
+      height: 36px;
+      border: 0;
+      border-bottom: 1px solid #eee;
+      outline: none;
+      font-size: 14px;
+    }
+    .pay-note[hidden] { display: none; }
+    .pay-pad {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-template-rows: repeat(4, 52px);
+      gap: 8px;
+      padding: 10px;
+      background: #f3f4f6;
+    }
+    .pay-key {
+      background: #fff;
+      border-radius: 8px;
+      font-size: 22px;
+      color: #222;
+    }
+    .pay-key:active { background: #f3f3f3; }
+    .pay-key.zero { grid-column: 1 / span 2; }
+    .pay-go {
+      grid-column: 4;
+      grid-row: 2 / span 3;
+      border-radius: 8px;
+      background: #d7d7d7;
+      color: #fff;
+      font-size: 18px;
+    }
+    .pay-go.ready { background: #2f86ff; }
+    .pay-go.ready:active { background: var(--blue-deep); }
+    .pay-result {
+      min-height: 100%;
+      background: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 48px 24px 24px;
+    }
+    .pay-mark {
+      width: 64px; height: 64px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      color: #fff; font-size: 36px; font-weight: 700;
+    }
+    .pay-mark.ok { background: #22c55e; }
+    .pay-mark.bad { background: #f04444; }
+    .pay-state { margin-top: 14px; font-size: 16px; }
+    .pay-sum { margin-top: 16px; font-size: 32px; font-weight: 700; letter-spacing: 0.5px; }
+    .pay-reason { margin-top: 18px; color: #909399; font-size: 14px; }
+    .pay-meta {
+      width: 100%;
+      margin-top: 28px;
+      background: #f6f7f9;
+      border-radius: 2px;
+      padding: 6px 14px;
+    }
+    .pay-meta div {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 8px 0;
+      font-size: 14px;
+      color: #666;
+    }
+    .pay-meta b { font-weight: 500; color: #333; }
+    .pay-done {
+      width: 180px;
+      height: 42px;
+      margin-top: 36px;
+      border-radius: 4px;
+      background: #2f86ff;
+      color: #fff;
+      font-size: 16px;
+    }
+    .set-page { min-height: 100%; background: #f2f3f5; }
+    .set-card { background: #fff; }
+    .set-row {
+      display: flex;
+      align-items: center;
+      min-height: 52px;
+      padding: 0 16px;
+      border-bottom: 1px solid #f0f0f0;
+      font-size: 15px;
+      gap: 12px;
+    }
+    .set-row span { width: 108px; flex-shrink: 0; color: #333; }
+    .set-row input {
+      flex: 1;
+      min-width: 0;
+      border: 0;
+      outline: none;
+      background: transparent;
+      text-align: right;
+      font-size: 14px;
+      color: #333;
+    }
+    .set-row input::placeholder { color: #c5c8ce; }
+    .set-ok {
+      display: block;
+      width: calc(100% - 32px);
+      height: 44px;
+      margin: 28px auto 0;
+      border-radius: 4px;
+      background: #2f86ff;
+      color: #fff;
+      font-size: 16px;
+    }
+    .set-ok:active { background: var(--blue-deep); }
+    .set-note { margin: 14px 16px 0; text-align: center; color: #b0b4bc; font-size: 12px; line-height: 1.5; }
+    .pin-mask {
+      position: absolute;
+      inset: 0;
+      z-index: 50;
+      background: rgba(0, 0, 0, 0.45);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+    .pin-mask[hidden] { display: none; }
+    .pin-card { width: 100%; background: #fff; border-radius: 12px; padding: 16px 16px 20px; }
+    .pin-hd { display: flex; align-items: center; justify-content: space-between; font-size: 16px; font-weight: 650; }
+    .pin-hd button { color: #999; font-size: 22px; line-height: 1; }
+    .pin-card .set-row { padding: 0 12px; margin-top: 16px; border: 1px solid #eee; border-radius: 6px; }
+    .pin-card .set-row input { text-align: center; font-size: 18px; letter-spacing: 4px; }
+    .pin-card .set-ok { width: 100%; margin-top: 16px; }
     .app-item em {
       font-style: normal;
       font-size: 12px;
@@ -357,6 +647,17 @@
     .mine-head b { font-size: 18px; display: block; }
     .mine-head p { margin-top: 4px; font-size: 12px; opacity: 0.92; }
     .mine-card { margin: -12px 12px 0; background: #fff; border-radius: 12px; overflow: hidden; }
+    .mine-logout {
+      display: block;
+      width: calc(100% - 24px);
+      margin: 12px auto 0;
+      height: 44px;
+      background: #fff;
+      border-radius: 12px;
+      color: #e24b4b;
+      font-size: 15px;
+    }
+    .mine-logout[hidden] { display: none; }
     .mine-row {
       width: 100%;
       height: 50px;
@@ -413,7 +714,7 @@
       transition: 0.2s ease;
       max-width: 80%;
       text-align: center;
-      z-index: 30;
+      z-index: 80;
     }
     .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
@@ -755,10 +1056,131 @@
     .help-ft button { flex: 1; height: 40px; border-radius: 6px; font-size: 15px; }
     .help-cancel { border: 1px solid #dcdfe6; background: #fff; color: #606266; }
     .help-ok { background: var(--blue); color: #fff; }
+
+    .auth {
+      position: absolute;
+      inset: 0;
+      z-index: 22;
+      background: #f4f5f7;
+      display: flex;
+      flex-direction: column;
+    }
+    .auth[hidden] { display: none; }
+    .auth-blue {
+      background: linear-gradient(180deg, #49a0ff 0%, #2f86ff 72%);
+      color: #fff;
+      flex-shrink: 0;
+      padding-bottom: 48px;
+    }
+    .auth-status { background: transparent; color: #fff; }
+    .auth-status .status-right { color: #fff; }
+    .auth-nav {
+      height: 44px;
+      display: flex;
+      align-items: center;
+      padding: 0 12px 0 6px;
+      position: relative;
+    }
+    .auth-back {
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1;
+    }
+    .auth-title {
+      position: absolute;
+      left: 48px;
+      right: 96px;
+      text-align: center;
+      font-size: 17px;
+      font-weight: 600;
+      pointer-events: none;
+    }
+    .auth-nav .capsule { margin-left: auto; z-index: 1; background: rgba(255, 255, 255, 0.92); }
+    .auth-brand {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 22px 0 6px;
+    }
+    .auth-logo {
+      width: 74px;
+      height: 74px;
+      border-radius: 18px;
+      background: #fff;
+      box-shadow: 0 8px 18px rgba(16, 70, 150, 0.16);
+      overflow: hidden;
+    }
+    .auth-logo svg { width: 74px; height: 74px; display: block; }
+    .auth-app { margin-top: 14px; font-size: 18px; letter-spacing: 1px; }
+    .auth-body { flex: 1; margin-top: -24px; padding: 0 16px 24px; overflow: auto; }
+    .auth-card {
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 8px 24px rgba(20, 40, 70, 0.06);
+      padding: 2px 16px 18px;
+    }
+    .auth-card[hidden], .auth-links[hidden] { display: none; }
+    .auth-row {
+      display: flex;
+      align-items: center;
+      min-height: 52px;
+      border-bottom: 1px solid #f0f1f3;
+      gap: 8px;
+      font-size: 15px;
+    }
+    .auth-row span { width: 92px; flex-shrink: 0; color: #333; }
+    .auth-row i { color: #f04545; font-style: normal; margin-right: 2px; }
+    .auth-row input {
+      flex: 1;
+      min-width: 0;
+      height: 44px;
+      border: 0;
+      outline: none;
+      font-size: 15px;
+      background: transparent;
+      color: #222;
+    }
+    .auth-row input::placeholder { color: #c8ccd3; }
+    .auth-submit {
+      width: 100%;
+      height: 44px;
+      margin-top: 22px;
+      border-radius: 4px;
+      background: #2f86ff;
+      color: #fff;
+      font-size: 16px;
+    }
+    .auth-submit:active { background: var(--blue-deep); }
+    #page-jl-pay-auth.active { display: flex; flex-direction: column; background: #f4f5f7; }
+    #device[data-screen="jl-pay-auth"] > #nav { display: none; }
+    #device[data-screen="jl-pay-auth"] > .status {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      z-index: 6;
+      background: transparent;
+      color: #fff;
+    }
+    #device[data-screen="jl-pay-auth"] > .status .status-right { color: #fff; }
+    #device[data-screen="jl-pay-auth"] > .status svg { filter: brightness(0) invert(1); }
+    .pay-auth-blue { padding-top: 28px; }
+    .auth-links { display: flex; justify-content: space-between; padding: 16px 2px 0; }
+    .auth-links button { color: #2f86ff; font-size: 14px; }
   </style>
 </head>
 <body>
   <button class="help-export-btn" id="btnExportHelpDocs" type="button" title="把本地已保存的需求说明写入 HTML，便于发布">导出需求说明</button>
+  <aside class="project-side">
+    <div class="project-card">
+      <div class="project-hd">项目</div>
+      <button class="project-item on" type="button" data-project="standard"><i class="project-mark"></i>标准版本</button>
+      <div class="project-label">江铃控股</div>
+      <button class="project-item sub" type="button" data-project="jlpay"><i class="project-mark"></i>付款</button>
+      <button class="project-item sub" type="button" data-project="jiangling"><i class="project-mark"></i>移动端</button>
+    </div>
+  </aside>
   <div class="device" id="device">
     <div class="status">
       <span id="clock">下午2:06</span>
@@ -811,7 +1233,8 @@
               <path d="M29 34c1.2 1.2 4.6 1.2 6 0" stroke="#e0897a" stroke-width="1" fill="none"></path>
             </svg>
           </div>
-          <div class="user-name">程影</div>
+          <div class="user-name" id="homeUserName">程影</div>
+          <button class="jl-home-help" id="jlHomeHelp" type="button" hidden="">需求说明</button>
           <button class="user-grid" id="toWork" type="button" aria-label="进入工作台">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
               <rect x="3" y="3" width="7.5" height="7.5" rx="1.6"></rect>
@@ -863,10 +1286,11 @@
           </div>
 
           <div class="card">
-            <div class="block-hd"><i></i>常用应用<button class="more" type="button" data-go="work">···</button></div>
+            <div class="block-hd"><i></i>常用应用<button class="more home-more" type="button" data-go="work">···</button></div>
             <div class="app-grid" id="homeApps"></div>
           </div>
 
+          <div class="home-extra">
           <div class="block-hd section-hd"><i></i>一键开门<button class="more" type="button" id="doorMore">···</button></div>
           <button class="door-card" id="doorCard" type="button">
             <div class="door-copy" id="doorCopy">
@@ -896,6 +1320,7 @@
               <button class="chip" type="button" data-from="14F" data-to="9F">14F - 9F</button>
               <button class="chip" type="button" data-from="9F" data-to="14F">9F - 14F</button>
             </div>
+          </div>
           </div>
         </div>
       </section>
@@ -934,23 +1359,170 @@
       </section>
 
       <section class="page" id="page-mine" data-page="mine">
-        <div class="mine-head">
-          <div class="avatar">
-            <svg viewBox="0 0 64 64">
-              <circle cx="32" cy="32" r="32" fill="#f6c3d2"></circle>
-              <path d="M14 58c2-12 10-18 18-18s16 6 18 18" fill="#3d312f"></path>
-              <path d="M16 30c1-14 8-22 16-22 9 0 16 8 16 20 0 2-6 4-10 3-2 6-6 8-6 8s-5-2-7-8c-4 1-9-1-9-1z" fill="#2c2422"></path>
-              <circle cx="32" cy="30" r="10" fill="#f3c3ae"></circle>
-              <circle cx="28" cy="29" r="1" fill="#333"></circle>
-              <circle cx="36" cy="29" r="1" fill="#333"></circle>
-            </svg>
+        <div class="mine-std">
+          <div class="mine-head">
+            <div class="avatar">
+              <svg viewBox="0 0 64 64">
+                <circle cx="32" cy="32" r="32" fill="#f6c3d2"></circle>
+                <path d="M14 58c2-12 10-18 18-18s16 6 18 18" fill="#3d312f"></path>
+                <path d="M16 30c1-14 8-22 16-22 9 0 16 8 16 20 0 2-6 4-10 3-2 6-6 8-6 8s-5-2-7-8c-4 1-9-1-9-1z" fill="#2c2422"></path>
+                <circle cx="32" cy="30" r="10" fill="#f3c3ae"></circle>
+                <circle cx="28" cy="29" r="1" fill="#333"></circle>
+                <circle cx="36" cy="29" r="1" fill="#333"></circle>
+              </svg>
+            </div>
+            <div>
+              <b id="mineUserName">程影</b>
+              <p id="mineOrg">深圳达实智能股份有限公司</p>
+            </div>
           </div>
-          <div>
-            <b>程影</b>
-            <p>深圳达实智能股份有限公司</p>
+          <div class="mine-card" id="mineList"></div>
+        </div>
+        <div class="mine-jl">
+          <div class="jl-mine-top">
+            <div class="jl-mine-bar">
+              <b>我的</b>
+              <div class="capsule" aria-hidden="true">
+                <span class="dots">···</span>
+                <i class="split"></i>
+                <span class="ring"></span>
+              </div>
+            </div>
+            <div class="jl-avatar" aria-hidden="true">
+              <svg viewBox="0 0 74 74">
+                <circle cx="37" cy="37" r="37" fill="#e44545"></circle>
+                <circle cx="37" cy="32" r="12" fill="#f4c7b4"></circle>
+                <path d="M16 66c2-16 9-24 21-24s19 8 21 24" fill="#2f2624"></path>
+                <path d="M18 34c1-16 8-24 19-24 12 0 18 8 19 22 0 2-6 5-11 4-2 7-6 9-8 9s-6-2-8-9c-5 1-11-2-11-2z" fill="#241c1a"></path>
+                <circle cx="33" cy="32" r="1.2" fill="#333"></circle>
+                <circle cx="41" cy="32" r="1.2" fill="#333"></circle>
+              </svg>
+            </div>
+            <div class="jl-mine-name" id="jlMineName">程影</div>
+          </div>
+          <div class="jl-mine-card">
+            <button class="jl-row" id="jlProfile" type="button"><span>个人信息</span><span class="arrow">›</span></button>
+            <button class="jl-row" id="jlPassword" type="button"><span>修改密码</span><span class="arrow">›</span></button>
+            <button class="jl-row" id="jlPayPwd" type="button"><span>修改支付密码</span><span class="arrow">›</span></button>
+            <button class="jl-row" id="jlLogout" type="button"><span>退出登录</span><span class="arrow">›</span></button>
           </div>
         </div>
-        <div class="mine-card" id="mineList"></div>
+      </section>
+
+      <section class="page" id="page-jl-profile" data-page="jl-profile">
+        <div class="jl-sheet">
+          <div class="auth-card">
+            <div class="auth-row"><span>姓名</span><b id="profileName"></b></div>
+            <div class="auth-row"><span>工号</span><b id="profileJob"></b></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="page" id="page-jl-payset" data-page="jl-payset">
+        <div class="set-page">
+          <div class="set-card">
+            <label class="set-row"><span>原支付密码</span><input id="oldPayPwd" type="password" inputmode="numeric" maxlength="6" placeholder="请输入原6位数字支付密码" autocomplete="off"></label>
+            <label class="set-row"><span>新支付密码</span><input id="newPayPwd" type="password" inputmode="numeric" maxlength="6" placeholder="请输入6位数字新支付密码" autocomplete="new-password"></label>
+            <label class="set-row"><span>确认支付密码</span><input id="newPayPwd2" type="password" inputmode="numeric" maxlength="6" placeholder="请再次输入新支付密码" autocomplete="new-password"></label>
+          </div>
+          <button class="set-ok" id="payPwdSave" type="button">确定</button>
+          <p class="set-note">注:如忘记原支付密码，请联系管理员重置</p>
+        </div>
+      </section>
+
+      <section class="page" id="page-jl-pay-auth" data-page="jl-pay-auth">
+        <div class="auth-blue pay-auth-blue">
+          <div class="auth-nav">
+            <span class="auth-back" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2"><path d="M15 5L8 12l7 7"></path></svg>
+            </span>
+            <div class="auth-title">人员验证</div>
+            <div class="capsule" aria-hidden="true">
+              <span class="dots">···</span>
+              <i class="split"></i>
+              <span class="ring"></span>
+            </div>
+          </div>
+          <div class="auth-brand">
+            <div class="auth-logo" aria-hidden="true">
+              <svg viewBox="0 0 74 74">
+                <rect width="74" height="74" rx="18" fill="#fff"></rect>
+                <path d="M18 40c6-16 22-20 36-8" stroke="#2f86ff" stroke-width="5" fill="none" stroke-linecap="round"></path>
+                <path d="M24 48c8 8 22 7 30-6" stroke="#2f86ff" stroke-width="5" fill="none" stroke-linecap="round"></path>
+                <rect x="48" y="16" width="7" height="7" rx="1" fill="#e23d3d"></rect>
+              </svg>
+            </div>
+            <div class="auth-app">江铃控股</div>
+          </div>
+        </div>
+        <div class="auth-body">
+          <div class="auth-card">
+            <label class="auth-row"><span><i>*</i>姓名</span><input id="payAuthName" placeholder="请输入姓名" autocomplete="off"></label>
+            <label class="auth-row"><span><i>*</i>工号</span><input id="payAuthJob" placeholder="请输入工号" autocomplete="off"></label>
+            <label class="auth-row"><span><i>*</i>支付密码</span><input id="payAuthPwd" type="password" inputmode="numeric" maxlength="6" placeholder="请输入6位数字支付密码" autocomplete="off"></label>
+            <button class="auth-submit" id="payAuthOk" type="button">确定</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="page" id="page-jl-password" data-page="jl-password">
+        <div class="jl-sheet">
+          <div class="auth-card">
+            <label class="auth-row"><span><i>*</i>原密码</span><input id="oldPwd" type="password" placeholder="请输入原密码" autocomplete="current-password"></label>
+            <label class="auth-row"><span><i>*</i>新密码</span><input id="newPwd" type="password" placeholder="请设置新密码" autocomplete="new-password"></label>
+            <label class="auth-row"><span><i>*</i>确认密码</span><input id="newPwd2" type="password" placeholder="请再次输入密码" autocomplete="new-password"></label>
+            <button class="auth-submit" id="jlPwdSave" type="button">保存</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="page" id="page-jl-pay" data-page="jl-pay">
+        <div class="pay-body">
+          <div class="pay-point">消费点名称111</div>
+          <div class="pay-amount"><span>¥</span><input id="payAmount" inputmode="decimal" placeholder="输入付款金额" autocomplete="off"></div>
+          <button class="pay-note-btn" id="payNoteBtn" type="button">添加备注</button>
+          <input class="pay-note" id="payNote" hidden="" placeholder="请输入备注">
+        </div>
+        <div class="pay-pad" id="payPad">
+          <button class="pay-key" type="button" data-key="1">1</button>
+          <button class="pay-key" type="button" data-key="2">2</button>
+          <button class="pay-key" type="button" data-key="3">3</button>
+          <button class="pay-key del" type="button" data-key="del" aria-label="删除">⌫</button>
+          <button class="pay-key" type="button" data-key="4">4</button>
+          <button class="pay-key" type="button" data-key="5">5</button>
+          <button class="pay-key" type="button" data-key="6">6</button>
+          <button class="pay-go" id="payGo" type="button">付款</button>
+          <button class="pay-key" type="button" data-key="7">7</button>
+          <button class="pay-key" type="button" data-key="8">8</button>
+          <button class="pay-key" type="button" data-key="9">9</button>
+          <button class="pay-key zero" type="button" data-key="0">0</button>
+          <button class="pay-key" type="button" data-key=".">.</button>
+        </div>
+      </section>
+
+      <section class="page" id="page-jl-pay-ok" data-page="jl-pay-ok">
+        <div class="pay-result">
+          <div class="pay-mark ok">✓</div>
+          <div class="pay-state">支付成功</div>
+          <div class="pay-sum" id="okAmount">¥ 0.00</div>
+          <div class="pay-meta">
+            <div><span>交易时间</span><b id="okTime"></b></div>
+            <div><span>消费点</span><b>消费点名称111</b></div>
+            <div><span>充值钱包</span><b id="okRecharge">¥ 0.00</b></div>
+            <div><span>补贴钱包</span><b id="okSubsidy">¥ 0.00</b></div>
+          </div>
+          <button class="pay-done" id="okDone" type="button">完成</button>
+        </div>
+      </section>
+
+      <section class="page" id="page-jl-pay-fail" data-page="jl-pay-fail">
+        <div class="pay-result">
+          <div class="pay-mark bad">×</div>
+          <div class="pay-state">支付失败</div>
+          <div class="pay-sum" id="failAmount">¥ 0.00</div>
+          <p class="pay-reason">钱包余额不足</p>
+          <button class="pay-done" id="failDone" type="button">完成</button>
+        </div>
       </section>
 
       <section class="page" id="page-stall" data-page="stall">
@@ -1047,12 +1619,90 @@
           <span id="helpTitle">需求说明</span>
           <button type="button" id="helpClose" aria-label="关闭">×</button>
         </div>
-        <textarea class="help-editor" id="helpEditor" spellcheck="false"></textarea>
+        <textarea class="help-editor" id="helpEditor" spellcheck="false" placeholder="在这里填写需求说明"></textarea>
         <p class="help-note">可直接修改上方内容，点击「保存」后下次打开仍会保留。</p>
         <div class="help-ft">
           <button class="help-cancel" id="helpCancel" type="button">取消</button>
           <button class="help-ok" id="helpSave" type="button">保存</button>
         </div>
+      </div>
+    </div>
+    <div class="auth" id="authLayer" hidden="">
+      <div class="auth-blue">
+        <div class="status auth-status">
+          <span id="authClock">下午1:54</span>
+          <div class="status-right">
+            <svg width="15" height="12" viewBox="0 0 15 12" fill="#fff" aria-hidden="true">
+              <rect x="0" y="7" width="2.2" height="5" rx="0.4"></rect>
+              <rect x="3.2" y="5" width="2.2" height="7" rx="0.4"></rect>
+              <rect x="6.4" y="3" width="2.2" height="9" rx="0.4"></rect>
+              <rect x="9.6" y="0.5" width="2.2" height="11.5" rx="0.4"></rect>
+            </svg>
+            <span style="font-size:11px;font-weight:700">4G</span>
+            <svg width="24" height="12" viewBox="0 0 24 12" aria-hidden="true">
+              <rect x="0.6" y="0.6" width="19" height="10.8" rx="2" fill="none" stroke="#fff" stroke-width="1.2"></rect>
+              <rect x="2" y="2" width="11.2" height="8" rx="1" fill="#fff"></rect>
+              <path d="M21 4.2v3.6c.8-.3 1.4-1 1.4-1.8S21.8 4.5 21 4.2z" fill="#fff"></path>
+            </svg>
+            <span style="font-size:11px">72</span>
+          </div>
+        </div>
+        <div class="auth-nav">
+          <button class="auth-back" id="authBack" type="button" aria-label="返回">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2"><path d="M15 5L8 12l7 7"></path></svg>
+          </button>
+          <div class="auth-title" id="authTitle">账号登录</div>
+          <div class="capsule" aria-hidden="true">
+            <span class="dots">···</span>
+            <i class="split"></i>
+            <span class="ring"></span>
+          </div>
+        </div>
+        <div class="auth-brand">
+          <div class="auth-logo" aria-hidden="true">
+            <svg viewBox="0 0 74 74">
+              <rect width="74" height="74" rx="18" fill="#fff"></rect>
+              <path d="M18 40c6-16 22-20 36-8" stroke="#2f86ff" stroke-width="5" fill="none" stroke-linecap="round"></path>
+              <path d="M24 48c8 8 22 7 30-6" stroke="#2f86ff" stroke-width="5" fill="none" stroke-linecap="round"></path>
+              <rect x="48" y="16" width="7" height="7" rx="1" fill="#e23d3d"></rect>
+            </svg>
+          </div>
+          <div class="auth-app">江铃控股</div>
+        </div>
+      </div>
+      <div class="auth-body">
+        <div class="auth-card" id="formLogin">
+          <label class="auth-row"><span><i>*</i>工号</span><input id="loginJob" placeholder="请输入工号" autocomplete="username"></label>
+          <label class="auth-row"><span><i>*</i>密码</span><input id="loginPwd" type="password" placeholder="请输入密码" autocomplete="current-password"></label>
+          <button class="auth-submit" id="loginSubmit" type="button">登录</button>
+        </div>
+        <div class="auth-links" id="loginLinks">
+          <button type="button" id="toRegister">新用户注册</button>
+          <button type="button" id="toReset">重置密码</button>
+        </div>
+        <div class="auth-card" id="formRegister" hidden="">
+          <label class="auth-row"><span><i>*</i>姓名</span><input id="regName" placeholder="请输入姓名"></label>
+          <label class="auth-row"><span><i>*</i>工号</span><input id="regJob" placeholder="请输入工号"></label>
+          <button class="auth-submit" id="regNext" type="button">下一步</button>
+        </div>
+        <div class="auth-card" id="formPassword" hidden="">
+          <label class="auth-row"><span><i>*</i>登录密码</span><input id="regPwd" type="password" placeholder="请设置登录密码" autocomplete="new-password"></label>
+          <label class="auth-row"><span><i>*</i>确认密码</span><input id="regPwd2" type="password" placeholder="请再次输入密码" autocomplete="new-password"></label>
+          <button class="auth-submit" id="regFinish" type="button">确认</button>
+        </div>
+        <div class="auth-card" id="formReset" hidden="">
+          <label class="auth-row"><span><i>*</i>工号</span><input id="resetJob" placeholder="请输入工号"></label>
+          <label class="auth-row"><span><i>*</i>新密码</span><input id="resetPwd" type="password" placeholder="请设置新密码" autocomplete="new-password"></label>
+          <label class="auth-row"><span><i>*</i>确认密码</span><input id="resetPwd2" type="password" placeholder="请再次输入密码" autocomplete="new-password"></label>
+          <button class="auth-submit" id="resetFinish" type="button">确认</button>
+        </div>
+      </div>
+    </div>
+    <div class="pin-mask" id="pinMask" hidden="">
+      <div class="pin-card">
+        <div class="pin-hd"><span>请输入支付密码</span><button type="button" id="pinClose" aria-label="关闭">×</button></div>
+        <label class="set-row"><input id="pinInput" type="password" inputmode="numeric" maxlength="6" placeholder="请输入6位数字支付密码" autocomplete="off"></label>
+        <button class="set-ok" id="pinOk" type="button">确定</button>
       </div>
     </div>
     <div class="toast" id="toast"></div>
@@ -1078,6 +1728,7 @@
     const BLUE = "#2f86ff";
     const ICONS = {
       qr: `<svg viewBox="0 0 48 48" fill="${BLUE}"><path d="M8 8h14v14H8V8zm4 4v6h6v-6h-6zM26 8h14v14H26V8zm4 4v6h6v-6h-6zM8 26h14v14H8V26zm4 4v6h6v-6h-6zM26 26h4v4h-4v-4zm8 0h6v4h-4v6h-6v-4h4v-6zm-8 8h4v6h-4v-6zm8 4h6v6h-6v-6z"/></svg>`,
+      scan: `<svg viewBox="0 0 48 48" fill="none" stroke="${BLUE}" stroke-width="3.2"><path d="M12 18V13h6M30 13h6v5M36 30v5h-6M18 35h-6v-5"/><path d="M11 24h26"/></svg>`,
       push: `<svg viewBox="0 0 48 48" fill="${BLUE}"><path d="M24 6l10 10h-6v12h-8V16h-6L24 6z"/><path d="M10 30h6v6h16v-6h6v12H10V30z"/></svg>`,
       checkin: `<svg viewBox="0 0 48 48" fill="${BLUE}"><path d="M14 8h4V4h4v4h8V4h4v4h6v32H8V8h6zm-2 10v18h24V18H12z"/><path d="M16 28l4 4 10-10 2.4 2.4L20 36l-6.4-6.4L16 28z" fill="#fff"/></svg>`,
       doc: `<svg viewBox="0 0 48 48" fill="${BLUE}"><path d="M12 6h16l10 10v26H12V6zm16 4v8h8"/><path d="M18 26h14v3H18zm0 7h14v3H18z" fill="#fff"/></svg>`,
@@ -1102,6 +1753,7 @@
     };
 
     const HOME_APPS = ["二维码", "信息推送", "考勤打卡", "考勤数据", "考勤审批", "楼宇控制", "充值", "访客邀约", "访客审批", "菜单", "订餐", "订餐记录", "评价记录"];
+    const JL_HOME_APPS = ["钱包", "收支明细"];
     const WORK_GROUPS = [
       { title: "访客应用", apps: ["访客邀约", "访客审批"] },
       { title: "考勤应用", apps: ["考勤打卡", "考勤数据", "考勤异常申请", "考勤审批"] },
@@ -1109,7 +1761,7 @@
       { title: "空间应用", apps: ["楼宇控制", "会议室管理", "信息推送"] }
     ];
     const APP_ICON = {
-      "二维码": "qr", "信息推送": "push", "考勤打卡": "checkin", "考勤数据": "doc",
+      "二维码": "qr", "扫一扫": "scan", "信息推送": "push", "考勤打卡": "checkin", "考勤数据": "doc",
       "考勤审批": "approve", "楼宇控制": "building", "充值": "recharge", "访客邀约": "mail",
       "访客审批": "visitor", "菜单": "menu", "订餐": "meal", "订餐记录": "record",
       "评价记录": "review", "收支明细": "bill", "钱包": "wallet", "分享码": "share",
@@ -1147,7 +1799,7 @@
     const navExtra = document.getElementById("navExtra");
     const nav = document.getElementById("nav");
     const tabbar = document.getElementById("tabbar");
-    const PAGES = ["home", "message", "work", "mine", "stall", "stall-config"];
+    const PAGES = ["home", "message", "work", "mine", "stall", "stall-config", "jl-profile", "jl-password", "jl-payset", "jl-pay-auth", "jl-pay", "jl-pay-ok", "jl-pay-fail"];
     let doorName = "";
     let pickTarget = "from";
     let canteenId = CANTEENS[0].id;
@@ -1166,9 +1818,14 @@
       return btn;
     }
 
-    function renderApps() {
+    function renderHomeApps() {
       const home = document.getElementById("homeApps");
-      HOME_APPS.forEach((name) => home.appendChild(appButton(name)));
+      const list = project === "jiangling" && jlUser ? JL_HOME_APPS : HOME_APPS;
+      home.innerHTML = "";
+      list.forEach((name) => home.appendChild(appButton(name)));
+    }
+    function renderApps() {
+      renderHomeApps();
       const work = document.getElementById("workBody");
       WORK_GROUPS.forEach((group) => {
         const card = document.createElement("div");
@@ -1200,7 +1857,10 @@
       const m = String(now.getMinutes()).padStart(2, "0");
       const ap = h < 12 ? "上午" : "下午";
       const hh = h % 12 === 0 ? 12 : h % 12;
-      document.getElementById("clock").textContent = `${ap}${hh}:${m}`;
+      const text = `${ap}${hh}:${m}`;
+      document.getElementById("clock").textContent = text;
+      const authClock = document.getElementById("authClock");
+      if (authClock) authClock.textContent = text;
     }
 
     let toastTimer = 0;
@@ -1213,19 +1873,36 @@
     }
 
     function showPage(name, push) {
+      if (project === "jiangling" && jlUser && (name === "message" || name === "work")) name = "home";
+      if ((name === "jl-profile" || name === "jl-password" || name === "jl-payset") && !(project === "jiangling" && jlUser)) name = "home";
+      if ((name === "jl-pay" || name === "jl-pay-ok" || name === "jl-pay-fail") && project === "jlpay" && !payUser) name = "jl-pay-auth";
+      if (name === "jl-pay-auth" && project !== "jlpay") name = "home";
+      if ((name === "jl-pay" || name === "jl-pay-ok" || name === "jl-pay-fail") && project !== "jlpay") name = "home";
       if (name === "stall-config" && !currentStall) name = "stall";
+      document.getElementById("device").dataset.screen = name;
       document.querySelectorAll(".page").forEach((p) => p.classList.toggle("active", p.dataset.page === name));
-      document.querySelectorAll(".tab").forEach((t) => t.classList.toggle("active", t.dataset.page === name));
-      const sub = name === "stall" || name === "stall-config";
-      nav.classList.toggle("sub", sub);
+      document.querySelectorAll(".tab").forEach((t) => {
+        const mineSub = name === "jl-profile" || name === "jl-password" || name === "jl-payset";
+        const on = t.dataset.page === name || (mineSub && t.dataset.page === "mine");
+        t.classList.toggle("active", on);
+      });
+      const sub = name === "stall" || name === "stall-config" || name === "jl-profile" || name === "jl-password" || name === "jl-payset" || name === "jl-pay-auth" || name === "jl-pay" || name === "jl-pay-ok" || name === "jl-pay-fail";
+      nav.classList.toggle("sub", sub && !(project === "jlpay" && name === "jl-pay-auth"));
       tabbar.classList.toggle("hide", sub);
       navExtra.style.display = name === "home" ? "" : "none";
-      document.getElementById("navHelp").hidden = !(name === "stall" || name === "stall-config");
+      document.getElementById("navHelp").hidden = !(name === "stall" || name === "stall-config" || name === "jl-pay");
       const titles = {
-        home: "深圳达实智能股份有限公司",
+        home: project === "jiangling" ? "江铃控股" : "深圳达实智能股份有限公司",
         message: "消息",
         work: "工作台",
         mine: "我的",
+        "jl-profile": "个人信息",
+        "jl-password": "修改密码",
+        "jl-payset": "支付设置",
+        "jl-pay-auth": "人员验证",
+        "jl-pay": "付款",
+        "jl-pay-ok": "支付结果",
+        "jl-pay-fail": "支付结果",
         stall: "选择档口",
         "stall-config": "展示屏设置"
       };
@@ -1445,6 +2122,16 @@
           "6. 档口宣传视频仅可上传 1 个，建议 MP4，分辨率不超过 1080P，大小不超过 100MB。上传后隐藏上传按钮，点击文件名可播放，删除后可重新上传。",
           "7. 保存后写入当前档口，返回选择页时该档口标记为已配置。"
         ].join("\n")
+      },
+      "jiangling-home": {
+        title: "江铃控股首页 - 需求说明",
+        key: "mobile_jiangling_home_help_v1",
+        text: ""
+      },
+      "jl-pay": {
+        title: "付款 - 需求说明",
+        key: "mobile_jiangling_pay_help_v1",
+        text: ""
       }
     };
     function readHelp(key, fallback) {
@@ -1455,9 +2142,9 @@
         return fallback;
       }
     }
-    function openHelp() {
+    function openHelp(docId) {
       const page = document.querySelector(".page.active");
-      const doc = page && HELP_DOCS[page.dataset.page];
+      const doc = HELP_DOCS[docId] || (page && HELP_DOCS[page.dataset.page]);
       if (!doc) return;
       document.getElementById("helpTitle").textContent = doc.title;
       document.getElementById("helpEditor").value = readHelp(doc.key, doc.text);
@@ -1470,6 +2157,10 @@
     document.getElementById("navHelp").addEventListener("click", (e) => {
       e.stopPropagation();
       openHelp();
+    });
+    document.getElementById("jlHomeHelp").addEventListener("click", (e) => {
+      e.stopPropagation();
+      openHelp("jiangling-home");
     });
     document.getElementById("helpClose").addEventListener("click", closeHelp);
     document.getElementById("helpCancel").addEventListener("click", closeHelp);
@@ -1536,8 +2227,117 @@
     document.getElementById("navBack").addEventListener("click", () => {
       if (document.getElementById("helpMask").classList.contains("show")) { closeHelp(); return; }
       if (document.getElementById("viewer").classList.contains("show")) { closeViewer(); return; }
+      const screen = document.getElementById("device").dataset.screen;
+      if (screen === "jl-pay-ok") { finishPay(); return; }
+      if (screen === "jl-pay-fail") { showPage("jl-pay", false); return; }
+      if (screen === "jl-pay" && project === "jlpay") { showPage("jl-pay-auth", false); return; }
+      if (screen === "jl-pay-auth" && project === "jlpay") return;
       history.back();
     });
+    let payRaw = "";
+    let payBalance = 8;
+    let payUser = null;
+    function syncPay(next) {
+      let value = String(next == null ? payRaw : next).replace(/[^\d.]/g, "");
+      const dot = value.indexOf(".");
+      if (dot >= 0) value = value.slice(0, dot + 1) + value.slice(dot + 1).replace(/\./g, "").slice(0, 2);
+      if (value.length > 1 && value[0] === "0" && value[1] !== ".") value = value.replace(/^0+/, "") || "0";
+      payRaw = value;
+      const input = document.getElementById("payAmount");
+      if (input.value !== payRaw) input.value = payRaw;
+      document.getElementById("payGo").classList.toggle("ready", !!payRaw && Number(payRaw) > 0);
+    }
+    function renderPay() { syncPay(payRaw); }
+    function resetPayForm() {
+      payRaw = "";
+      document.getElementById("payNote").value = "";
+      document.getElementById("payNote").hidden = true;
+      renderPay();
+    }
+    function openPay() {
+      resetPayForm();
+      showPage("jl-pay", true);
+      document.getElementById("payAmount").focus();
+    }
+    function finishPay() {
+      if (project === "jlpay") {
+        resetPayForm();
+        showPage("jl-pay", false);
+        return;
+      }
+      showPage("home", false);
+    }
+    function typePay(key) {
+      if (key === "del") syncPay(payRaw.slice(0, -1));
+      else if (key === ".") syncPay(payRaw.includes(".") ? payRaw : (payRaw ? payRaw + "." : "0."));
+      else if (payRaw === "0") syncPay(key);
+      else syncPay(payRaw + key);
+    }
+    function stampNow() {
+      const d = new Date();
+      const p = (n) => String(n).padStart(2, "0");
+      return d.getFullYear() + "-" + p(d.getMonth() + 1) + "-" + p(d.getDate()) + " " + p(d.getHours()) + ":" + p(d.getMinutes()) + ":" + p(d.getSeconds());
+    }
+    document.getElementById("payAmount").addEventListener("input", () => syncPay(document.getElementById("payAmount").value));
+    document.getElementById("payPad").addEventListener("click", (e) => {
+      const key = e.target.closest("[data-key]");
+      if (key) typePay(key.dataset.key);
+    });
+    document.getElementById("payGo").addEventListener("click", () => {
+      const amount = Number(payRaw);
+      if (!payRaw || !(amount > 0)) { toast("请输入付款金额"); return; }
+      document.getElementById("pinInput").value = "";
+      document.getElementById("pinMask").hidden = false;
+      document.getElementById("pinInput").focus();
+    });
+    function onlyDigits(input) {
+      input.addEventListener("input", () => {
+        const next = input.value.replace(/\D/g, "").slice(0, 6);
+        if (input.value !== next) input.value = next;
+      });
+    }
+    ["oldPayPwd", "newPayPwd", "newPayPwd2", "payAuthPwd", "pinInput"].forEach((id) => onlyDigits(document.getElementById(id)));
+    function closePin() { document.getElementById("pinMask").hidden = true; }
+    document.getElementById("pinClose").addEventListener("click", closePin);
+    document.getElementById("pinMask").addEventListener("click", (e) => { if (e.target.id === "pinMask") closePin(); });
+    function payPasswordOf(account) { return (account && account.payPassword) || "123456"; }
+    function chargePay() {
+      const amount = Number(payRaw);
+      const shown = "¥ " + amount.toFixed(2);
+      closePin();
+      if (amount > payBalance + 0.001) {
+        document.getElementById("failAmount").textContent = shown;
+        showPage("jl-pay-fail", true);
+        return;
+      }
+      payBalance = Math.round((payBalance - amount) * 100) / 100;
+      const cents = Math.round(amount * 100);
+      const rechargeCents = Math.floor(cents / 2);
+      const subsidyCents = cents - rechargeCents;
+      const yuan = (n) => "¥ " + (n / 100).toFixed(2);
+      document.getElementById("okAmount").textContent = shown;
+      document.getElementById("okRecharge").textContent = yuan(rechargeCents);
+      document.getElementById("okSubsidy").textContent = yuan(subsidyCents);
+      document.getElementById("okTime").textContent = stampNow();
+      payRaw = "";
+      renderPay();
+      showPage("jl-pay-ok", true);
+    }
+    document.getElementById("pinOk").addEventListener("click", () => {
+      const pin = document.getElementById("pinInput").value;
+      if (!/^\d{6}$/.test(pin)) { toast("请输入6位数字支付密码"); return; }
+      if (!payUser) { toast("请先完成身份验证"); return; }
+      const account = loadAccounts()[payUser.job];
+      if (payPasswordOf(account) !== pin) { toast("支付密码错误"); return; }
+      chargePay();
+    });
+    document.getElementById("payNoteBtn").addEventListener("click", () => {
+      const note = document.getElementById("payNote");
+      note.hidden = false;
+      note.focus();
+    });
+    document.getElementById("okDone").addEventListener("click", finishPay);
+    document.getElementById("failDone").addEventListener("click", () => showPage("jl-pay", false));
     document.getElementById("sheetClose").addEventListener("click", closeSheet);
     document.getElementById("mask").addEventListener("click", (e) => { if (e.target.id === "mask") closeSheet(); });
 
@@ -1668,6 +2468,207 @@
     window.addEventListener("popstate", () => {
       const name = (location.hash || "#home").slice(1);
       showPage(PAGES.includes(name) ? name : "home", false);
+    });
+
+    let project = "standard";
+    let jlUser = null;
+    let pendingReg = null;
+    let authView = "login";
+    const ACCOUNT_KEY = "jl_accounts_v1";
+    function loadAccounts() {
+      try { return JSON.parse(localStorage.getItem(ACCOUNT_KEY) || "{}"); } catch (e) { return {}; }
+    }
+    function saveAccounts(map) {
+      try { localStorage.setItem(ACCOUNT_KEY, JSON.stringify(map)); } catch (e) {}
+    }
+    function applyIdentity() {
+      const jiangling = project === "jiangling" && jlUser;
+      document.getElementById("homeUserName").textContent = jiangling ? jlUser.name : "程影";
+      document.getElementById("mineUserName").textContent = jiangling ? jlUser.name : "程影";
+      document.getElementById("mineOrg").textContent = jiangling ? "江铃控股" : "深圳达实智能股份有限公司";
+      document.getElementById("jlMineName").textContent = jiangling ? jlUser.name : "程影";
+      document.getElementById("jlHomeHelp").hidden = !jiangling;
+      document.getElementById("device").classList.toggle("jl", !!jiangling);
+      renderHomeApps();
+      const active = document.querySelector(".page.active");
+      if (jiangling && active && (active.dataset.page === "message" || active.dataset.page === "work")) {
+        showPage("home", false);
+        return;
+      }
+      if (active && active.dataset.page === "home") {
+        navText.textContent = project === "jiangling" ? "江铃控股" : "深圳达实智能股份有限公司";
+      }
+    }
+    function showAuth(view) {
+      authView = view;
+      document.getElementById("formLogin").hidden = view !== "login";
+      document.getElementById("loginLinks").hidden = view !== "login";
+      document.getElementById("formRegister").hidden = view !== "register";
+      document.getElementById("formPassword").hidden = view !== "password";
+      document.getElementById("formReset").hidden = view !== "reset";
+      const titles = { login: "账号登录", register: "新用户注册", password: "设置登录密码", reset: "重置密码" };
+      document.getElementById("authTitle").textContent = titles[view] || "账号登录";
+      document.getElementById("authLayer").hidden = false;
+    }
+    function enterJiangling() {
+      document.getElementById("toast").classList.remove("show");
+      document.getElementById("authLayer").hidden = true;
+      showPage("home", false);
+      applyIdentity();
+    }
+    document.querySelector(".project-side").addEventListener("click", (e) => {
+      const btn = e.target.closest("[data-project]");
+      if (!btn || btn.dataset.project === project) return;
+      project = btn.dataset.project;
+      document.querySelectorAll(".project-item").forEach((item) => item.classList.toggle("on", item === btn));
+      document.getElementById("authLayer").hidden = true;
+      if (project === "jlpay") {
+        payUser = null;
+        document.getElementById("payAuthName").value = "";
+        document.getElementById("payAuthJob").value = "";
+        document.getElementById("payAuthPwd").value = "";
+        document.getElementById("pinMask").hidden = true;
+        showPage("jl-pay-auth", false);
+      } else if (project === "jiangling" && !jlUser) {
+        showAuth("login");
+      } else {
+        const active = document.querySelector(".page.active");
+        const onPay = active && active.dataset.page.indexOf("jl-pay") === 0;
+        if (onPay) showPage("home", false);
+      }
+      applyIdentity();
+    });
+    document.getElementById("authBack").addEventListener("click", () => {
+      if (authView === "password") showAuth("register");
+      else if (authView === "register" || authView === "reset") showAuth("login");
+    });
+    document.getElementById("toRegister").addEventListener("click", () => showAuth("register"));
+    document.getElementById("toReset").addEventListener("click", () => showAuth("reset"));
+    document.getElementById("regNext").addEventListener("click", () => {
+      const name = document.getElementById("regName").value.trim();
+      const job = document.getElementById("regJob").value.trim();
+      if (!name) { toast("请输入姓名"); return; }
+      if (!job) { toast("请输入工号"); return; }
+      const accounts = loadAccounts();
+      if (accounts[job]) { toast("该工号已注册"); return; }
+      pendingReg = { name, job };
+      document.getElementById("regPwd").value = "";
+      document.getElementById("regPwd2").value = "";
+      showAuth("password");
+    });
+    document.getElementById("regFinish").addEventListener("click", () => {
+      if (!pendingReg) { showAuth("register"); return; }
+      const pwd = document.getElementById("regPwd").value;
+      const pwd2 = document.getElementById("regPwd2").value;
+      if (!pwd) { toast("请设置登录密码"); return; }
+      if (pwd !== pwd2) { toast("两次密码不一致"); return; }
+      const accounts = loadAccounts();
+      accounts[pendingReg.job] = { name: pendingReg.name, password: pwd, payPassword: "123456" };
+      saveAccounts(accounts);
+      document.getElementById("loginJob").value = pendingReg.job;
+      document.getElementById("loginPwd").value = "";
+      pendingReg = null;
+      showAuth("login");
+      toast("注册成功，请登录");
+    });
+    document.getElementById("loginSubmit").addEventListener("click", () => {
+      const job = document.getElementById("loginJob").value.trim();
+      const pwd = document.getElementById("loginPwd").value;
+      if (!job) { toast("请输入工号"); return; }
+      if (!pwd) { toast("请输入密码"); return; }
+      const account = loadAccounts()[job];
+      if (!account || account.password !== pwd) { toast("工号或密码错误"); return; }
+      jlUser = { name: account.name, job };
+      document.getElementById("loginPwd").value = "";
+      enterJiangling();
+    });
+    document.getElementById("resetFinish").addEventListener("click", () => {
+      const job = document.getElementById("resetJob").value.trim();
+      const pwd = document.getElementById("resetPwd").value;
+      const pwd2 = document.getElementById("resetPwd2").value;
+      if (!job) { toast("请输入工号"); return; }
+      const accounts = loadAccounts();
+      if (!accounts[job]) { toast("该工号未注册"); return; }
+      if (!pwd) { toast("请设置新密码"); return; }
+      if (pwd !== pwd2) { toast("两次密码不一致"); return; }
+      accounts[job].password = pwd;
+      saveAccounts(accounts);
+      document.getElementById("loginJob").value = job;
+      document.getElementById("loginPwd").value = "";
+      document.getElementById("resetPwd").value = "";
+      document.getElementById("resetPwd2").value = "";
+      showAuth("login");
+      toast("密码已重置，请登录");
+    });
+    document.getElementById("jlProfile").addEventListener("click", () => {
+      if (!jlUser) return;
+      document.getElementById("profileName").textContent = jlUser.name;
+      document.getElementById("profileJob").textContent = jlUser.job;
+      showPage("jl-profile", true);
+    });
+    document.getElementById("jlPassword").addEventListener("click", () => {
+      document.getElementById("oldPwd").value = "";
+      document.getElementById("newPwd").value = "";
+      document.getElementById("newPwd2").value = "";
+      showPage("jl-password", true);
+    });
+    document.getElementById("jlPayPwd").addEventListener("click", () => {
+      document.getElementById("oldPayPwd").value = "";
+      document.getElementById("newPayPwd").value = "";
+      document.getElementById("newPayPwd2").value = "";
+      showPage("jl-payset", true);
+    });
+    document.getElementById("payPwdSave").addEventListener("click", () => {
+      if (!jlUser) return;
+      const oldPwd = document.getElementById("oldPayPwd").value;
+      const pwd = document.getElementById("newPayPwd").value;
+      const pwd2 = document.getElementById("newPayPwd2").value;
+      const accounts = loadAccounts();
+      const account = accounts[jlUser.job];
+      if (!/^\d{6}$/.test(oldPwd)) { toast("请输入原6位数字支付密码"); return; }
+      if (payPasswordOf(account) !== oldPwd) { toast("原支付密码不正确"); return; }
+      if (!/^\d{6}$/.test(pwd)) { toast("请输入6位数字新支付密码"); return; }
+      if (pwd !== pwd2) { toast("两次支付密码不一致"); return; }
+      account.payPassword = pwd;
+      saveAccounts(accounts);
+      toast("支付密码已修改");
+      showPage("mine", false);
+    });
+    document.getElementById("payAuthOk").addEventListener("click", () => {
+      const name = document.getElementById("payAuthName").value.trim();
+      const job = document.getElementById("payAuthJob").value.trim();
+      const pin = document.getElementById("payAuthPwd").value;
+      if (!name) { toast("请输入姓名"); return; }
+      if (!job) { toast("请输入工号"); return; }
+      if (!/^\d{6}$/.test(pin)) { toast("请输入6位数字支付密码"); return; }
+      const account = loadAccounts()[job];
+      if (!account || account.name !== name) { toast("姓名或工号不正确"); return; }
+      if (payPasswordOf(account) !== pin) { toast("支付密码错误"); return; }
+      payUser = { name: account.name, job };
+      resetPayForm();
+      showPage("jl-pay", true);
+    });
+    document.getElementById("jlPwdSave").addEventListener("click", () => {
+      if (!jlUser) return;
+      const oldPwd = document.getElementById("oldPwd").value;
+      const pwd = document.getElementById("newPwd").value;
+      const pwd2 = document.getElementById("newPwd2").value;
+      const accounts = loadAccounts();
+      const account = accounts[jlUser.job];
+      if (!oldPwd) { toast("请输入原密码"); return; }
+      if (!account || account.password !== oldPwd) { toast("原密码不正确"); return; }
+      if (!pwd) { toast("请设置新密码"); return; }
+      if (pwd !== pwd2) { toast("两次密码不一致"); return; }
+      account.password = pwd;
+      saveAccounts(accounts);
+      toast("密码已修改");
+      showPage("mine", false);
+    });
+    document.getElementById("jlLogout").addEventListener("click", () => {
+      jlUser = null;
+      document.getElementById("loginPwd").value = "";
+      showAuth("login");
+      applyIdentity();
     });
 
     renderApps();
